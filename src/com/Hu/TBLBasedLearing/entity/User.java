@@ -9,6 +9,7 @@ public class User {
 	private String RoleID;
 	private String GroupID;
 	private String ClassID;
+	private String RoleName;
 	public Integer getUserID() {
 		return UserID;
 	}
@@ -17,6 +18,12 @@ public class User {
 	}
 	public String getUserName() {
 		return UserName;
+	}
+	public String getRoleName() {
+		return RoleName;
+	}
+	public void setRoleName(String roleName) {
+		RoleName = roleName;
 	}
 	public void setUserName(String userName) {
 		UserName = userName;

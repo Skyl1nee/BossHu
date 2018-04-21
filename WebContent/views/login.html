@@ -4,11 +4,64 @@
 <meta charset="UTF-8">
 <title>欢迎使用TBL系统</title>
 <script src="js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="js/bootstrap.min.js"></script>
+ 
+    <script src="js/validator/bootstrapValidator.min.js"></script>
+    <link href="css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+
 <script>
 	$(function(){
+		
+		$('form').bootstrapValidator({
+	　　　　　　　　message: 'This value is not valid',
+	            　/* feedbackIcons: {
+	                　　　　　　　　valid: 'glyphicon glyphicon-ok',
+	                　　　　　　　　invalid: 'glyphicon glyphicon-remove',
+	                　　　　　　　　validating: 'glyphicon glyphicon-refresh'
+	            　　　　　　　　   }, */
+	            fields: {
+	            	username: {
+	                    message: '用户名验证失败',
+	                    validators: {
+	                        notEmpty: {
+	                            message: '用户名不能为空'
+	                        }
+	                    }
+	                },
+	                password: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: '邮箱地址不能为空'
+	                        }
+	                    }
+	                }
+	            }
+	        });
+		
+		
+		// 回车触发登陆
+		document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+               
+             if(e && e.keyCode==13){ // enter 键
+            	 $("#login-btn").trigger('click');
+            }
+        }; 
+		
+		
+		
 		$("#login-btn").click(function(){
 			var username = $("#username").val();
-			var password = $("#password").val();			
+			var password = $("#password").val();
+			if(username=="" || password == ""){
+				$("#loginform").data("bootstrapValidator").validate();
+				return;
+			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
 				if(result.code == 200){
 					alert( username + "你可真厉害");
@@ -21,20 +74,31 @@
 	})
 </script>
 </head>
-<body style="position:fixed;width:100%;height:100%;background:url(views/images/background.jpg);background-repeat: no-repeat;background-size: 100%;opacity:0.5">
-	<div style="text-align:center;margin-top:10px;border">
-		<h4 class="modal-title" style="text-align:center;margin-top:50px;">用户登录</h4>
-	 	<form method="get">
-	 		<div >
-	  			用户名: <input type="text" name="username" id="username"/>
+<body style="position:fixed;width:100%;height:100%;background:url(views/images/background.jpg);background-repeat: no-repeat;background-size: 100%;">
+	<div style="width: 30%; margin: 0 auto;">
+		<div class="page-header">
+		  
+		  <h1 style="text-align:center">用户登陆 </h1>
+		  <div style="margin: 0 auto;width:18%;height:3px;background-color:#E94266"></div>
+		</div>
+	 	<form method="post" class="form-horizontal" id="loginform">
+	 		<div class="form-group">
+	  			<label for="username" class= "col-sm-2 control-label">用户名：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="username" id="username" data-bv-notempty-message="The username is required and cannot be empty"/>
+	  			</div>
 	  		</div>
-	  		<div style="margin-top:10px">
-	  			密 码:  <input type="password" name="password" id="password" style="margin-left: 11px;"/>
+	  		<div class="form-group">
+	  			<label for="password" class= "col-sm-2 control-label">密码：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="password" name="password" id="password"/>
+	  			</div>
 	  		</div>
-	  		<div style="margin-top:10px">
-	  		<button id="login-btn">登录</button>
-	  		<button type="reset">打扰了</button>
+	  		<div class="form-group" style="text-align: center">
+		  		<a class="btn btn-primary" id="login-btn">登录</a>
+		  		<a class="btn btn-success" type="reset" style="margin-left:18px">打扰了</a>
 	  		</div>
+	  		
 		</form>
 	</div>
 </body>

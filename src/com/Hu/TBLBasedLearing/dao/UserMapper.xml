@@ -11,11 +11,18 @@
         <result property="Gender" 		column="Gender"/> 
      	<result property="RoleID" 		column="RoleID"/> 
         <result property="GroupID" 		column="GroupID"/> 
-        <result property="ClassID" 		column="ClassID"/>       
+        <result property="ClassID" 		column="ClassID"/>    
+           
+        <result property="RoleName" 		column="RoleName"/>    
     </resultMap>
     <!-- 根据用户名查询用户 --> 
     <select id="FindPwdByname" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
-	    <![CDATA[SELECT * from usertable
+	    <![CDATA[SELECT * from usertable left join
 	         WHERE userName=#{UserName}]]>
+    </select> 
+    
+    <select id="FindUser" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
+	    <![CDATA[SELECT *,RoleName from usertable u left join roletable r on r.RoleID = u.RoleID 
+	         WHERE userName=#{0} and Password=#{1}]]>
     </select> 
 </mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- 配置扫描组件 -->
+	<context:component-scan base-package="com.Hu.TBLBasedLearing">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
+	
+	<!-- 映射@RequestMapping注解的Action方法 -->
+	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="com.Hu.TBLBasedLearing.web.interceptor.HttpInterceptor"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 处理方法级别上的@RequestMapping注解 -->
+	<bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<!-- 配置消息转换 -->
+		<property name="messageConverters">
+			<!-- FastJson 处理JSON数据转换的 -->
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<!-- 转换数据时应用到的配置 -->
+				<property name="features">
+	                <list>
+	                    <!-- 时间格式化 -->
+	                    <value>WriteDateUseDateFormat</value>
+	                    <!-- 禁用循环引用 -->
+	                    <value>DisableCircularReferenceDetect</value>
+	                    <!-- 输出空值字段 -->
+	                    <value>WriteMapNullValue</value>
+	                    <!-- 强制把null序列化为空,list->[],Map->{} -->
+	                    <value>WriteNullListAsEmpty</value>
+	                    <value>WriteNullStringAsEmpty</value>
+	                </list>
+            	</property>
+            	<!-- contentType -->
+            	<property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+			</bean>
+		</property>
+		<!-- 处理对时间的注入 -->
+        <property name="webBindingInitializer">
+            <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+                <property name="conversionService">
+                    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+                </property>
+            </bean>
+        </property>
+	</bean>
+	
+	<!-- 对视图配置 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/views/"/>
+        <property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- 文件上传的支持(复合表单) -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+</beans>

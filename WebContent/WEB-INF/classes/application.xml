@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 开启基于注解配置 -->
+	<context:annotation-config/>
+	
+	<!-- 开启自动依赖注入的扫描包路径 -->
+	<context:component-scan base-package="com.Hu.TBLBasedLearing">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 加载配置文件 -->
+	<bean id="configLocation" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		 <property name="locations">
+            <list>
+                <value>classpath*:jdbc.properties</value>
+            </list>
+        </property>
+	</bean>
+	
+	<!-- 配置数据源,采用BoneCP数据库连接池 -->
+	<bean id="defaultDataSource" class="com.jolbox.bonecp.BoneCPDataSource">
+		<property name="driverClass" value="${db.driverClass}" />
+		<property name="jdbcUrl" value="${db.jdbcUrl}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		
+		<!-- 分区个数，默认：1个，建议3-4 -->
+		<property name="partitionCount" value="${db.partitionCount}" />
+		<!-- 分区含有connection最小个数，默认：0个 -->
+		<property name="minConnectionsPerPartition" value="${db.minConnectionsPerPartition}" />
+		<!-- 分区含有connection最大个数，默认：2个 -->
+		<property name="maxConnectionsPerPartition" value="${db.maxConnectionsPerPartition}" />
+		<!-- 分区中的connection增长数量，默认:1个 -->
+		<property name="acquireIncrement" value="${db.acquireIncrement}" />
+		<!-- 分区中的connection增长数量，默认:1个 -->
+		<property name="poolAvailabilityThreshold" value="${db.poolAvailabilityThreshold}" />
+
+		<!-- 连接空闲存活时间，默认：60分钟，设置为0该功能失效 -->
+		<property name="idleMaxAge" value="${db.idleMaxAge}" />
+		<!-- 连接测试间隔时间，默认：240分钟，设置为0该功能失效 -->
+		<property name="idleConnectionTestPeriod" value="${db.idleConnectionTestPeriod}" />
+		<!-- 连接关闭后处理回收的助手线程个数，默认：3个 -->
+		<property name="releaseHelperThreads" value="${db.releaseHelperThreads}" />
+
+		<!-- Statement缓存个数，默认：0个 -->
+		<property name="statementsCacheSize" value="${db.statementsCacheSize}" />
+		<!-- 关闭Statement超过使用上限的助手线程个数，默认：3个 -->
+		<property name="statementReleaseHelperThreads" value="${db.statementReleaseHelperThreads}" />
+	</bean>
+	
+	<!-- 创建session工厂 -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+		<!-- 定义数据源 -->
+		<property name="dataSource" ref="defaultDataSource" />
+		<!-- mybatis配置文件 -->
+		<property name="configLocation" value="classpath:db/mybatis-config.xml"/>
+	</bean>
+	
+	<!-- mybatis 自动扫描mapper -->
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.Hu.TBLBasedLearing.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+	</bean>
+	
+	<!-- 创建事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="defaultDataSource"/>
+	</bean>
+	
+	<!-- 开启基于注解式的事务行为 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 拦截器方式配置事务 切点-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+			<tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+			
+			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="select*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置切面 -->
+	<aop:config>
+		<aop:pointcut id="defaultPointcut" expression="execution(* com.Hu.TBLBasedLearing..service..*Impl.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="defaultPointcut"/>
+	</aop:config>
+	
+</beans>

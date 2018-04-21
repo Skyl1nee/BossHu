@@ -21,7 +21,7 @@ public class UserController {
 	@RequestMapping("login.htm")
 	@ResponseBody
 	public Result Login(String username, String password, HttpServletRequest request){
-		Result result = this.userService.findByName(username, password);
+		Result result = this.userService.FindUser(username, password);
 		if(result.isSuccess()){
 			SessionHolder.holder(result.getData(User.class), request.getSession());
 		}

@@ -22,5 +22,15 @@ public class UserServiceImpl implements UserService {
 		}
 		return new Result(200,user);
 	}
+	
+	
+	@Override
+	public Result FindUser(String UserName, String Password) {
+		User user = this.userMapper.FindUser(UserName,Password);
+		if(user == null){
+			return new Result(400,"密码或者用户名错误");
+		}
+		return new Result(200,user);
+	}
 
 }
