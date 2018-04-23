@@ -38,4 +38,12 @@ public class UserController {
 		User user = SessionHolder.getUser(request.getSession());		
 		return user;		
 	}
+	
+	
+	@RequestMapping("getgrouplist")
+	@ResponseBody
+	public User getgrouplist(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());		
+		return user;		
+	}
 }
