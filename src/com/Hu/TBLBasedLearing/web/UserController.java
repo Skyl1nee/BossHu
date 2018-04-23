@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.Hu.TBLBasedLearing.entity.User;
 import com.Hu.TBLBasedLearing.model.Result;
@@ -22,20 +23,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@RequestMapping("login.htm")
-	
-	public String Login(String username, String password, HttpServletRequest request) throws Exception{
+	@ResponseBody
+	public Result Login(String username, String password, HttpServletRequest request) throws Exception{
 		Result result = this.userService.FindUser(username, password);
 		if(result.isSuccess()){
-			SessionHolder.holder(result.getData(User.class), request.getSession());
-			
+			SessionHolder.holder(result.getData(User.class), request.getSession());           
 		}
-		return "redirect:index";
+		return result;
 	}
 	
-	@RequestMapping("index")
-	public String index(HttpServletRequest request){
-		User user = SessionHolder.getUser(request.getSession());
-		
-		return "index";		
+	@RequestMapping("index.htm")
+	@ResponseBody
+	public User index(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());		
+		return user;		
 	}
 }

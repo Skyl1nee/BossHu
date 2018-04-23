@@ -63,8 +63,7 @@
 				return;
 			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
-				/* location.href = "/tbl/" + result; */
-				console.info(result);
+				window.location.href ="/tbl/views/index.html"
 			});
 		})
 		
