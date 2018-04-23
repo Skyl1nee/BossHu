@@ -19,7 +19,18 @@
 	$(function(){
 		$.post("/tbl/user/index.htm",function(user){
 			var name = user.userName;
+			var rolename;
 			alert(name);
+			switch(user.roleID){
+				case "1":
+					rolename = "student";break;
+				case "2":
+					rolename = "teacher";break;
+				case "3":
+					rolename = "student";break;			
+			}
+			var iframeUrl = "/tbl/views/" + rolename + "Iframe.html";
+			$("#content").attr("src",iframeUrl);
 		});
 	})
 </script>
@@ -76,7 +87,7 @@
 
 
     <div class="container">
-	
+	<iframe id="content" frameborder="0" width="100%" height="800" style="margin: auto;"></iframe>
     </div> <!-- /container -->
 
   </body>
