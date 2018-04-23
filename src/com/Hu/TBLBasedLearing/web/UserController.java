@@ -1,6 +1,9 @@
 package com.Hu.TBLBasedLearing.web;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +22,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@RequestMapping("login.htm")
-	@ResponseBody
-	public Result Login(String username, String password, HttpServletRequest request){
+	
+	public String Login(String username, String password, HttpServletRequest request) throws Exception{
 		Result result = this.userService.FindUser(username, password);
 		if(result.isSuccess()){
 			SessionHolder.holder(result.getData(User.class), request.getSession());
+			
 		}
-		return result;		
+		return "redirect:index";
 	}
-
+	
+	@RequestMapping("index")
+	public String index(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		
+		return "index";		
+	}
 }

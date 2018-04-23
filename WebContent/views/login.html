@@ -63,11 +63,8 @@
 				return;
 			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
-				if(result.code == 200){
-					alert( username + "你可真厉害");
-				} else {
-					alert(result.message);
-				}
+				/* location.href = "/tbl/" + result; */
+				console.info(result);
 			});
 		})
 		

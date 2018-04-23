@@ -63,7 +63,7 @@
 	<!-- 对视图配置 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/views/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="suffix" value=".html"/>
 	</bean>
 	
 	<!-- 文件上传的支持(复合表单) -->
