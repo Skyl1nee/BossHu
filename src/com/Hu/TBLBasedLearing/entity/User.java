@@ -2,28 +2,22 @@ package com.Hu.TBLBasedLearing.entity;
 
 public class User {
 
-	private Integer UserID;
+	private int UserID;
 	private String UserName;
 	private String Password;
 	private String Gender;
-	private String RoleID;
-	private String GroupID;
-	private String ClassID;
+	private int RoleID;
+	private int GroupID;
+	private int ClassID;
 	private String RoleName;
-	public Integer getUserID() {
+	public int getUserID() {
 		return UserID;
 	}
-	public void setUserID(Integer userID) {
+	public void setUserID(int userID) {
 		UserID = userID;
 	}
 	public String getUserName() {
 		return UserName;
-	}
-	public String getRoleName() {
-		return RoleName;
-	}
-	public void setRoleName(String roleName) {
-		RoleName = roleName;
 	}
 	public void setUserName(String userName) {
 		UserName = userName;
@@ -40,23 +34,29 @@ public class User {
 	public void setGender(String gender) {
 		Gender = gender;
 	}
-	public String getRoleID() {
+	public int getRoleID() {
 		return RoleID;
 	}
-	public void setRoleID(String roleID) {
+	public void setRoleID(int roleID) {
 		RoleID = roleID;
 	}
-	public String getGroupID() {
+	public int getGroupID() {
 		return GroupID;
 	}
-	public void setGroupID(String groupID) {
+	public void setGroupID(int groupID) {
 		GroupID = groupID;
 	}
-	public String getClassID() {
+	public int getClassID() {
 		return ClassID;
 	}
-	public void setClassID(String classID) {
+	public void setClassID(int classID) {
 		ClassID = classID;
+	}
+	public String getRoleName() {
+		return RoleName;
+	}
+	public void setRoleName(String roleName) {
+		RoleName = roleName;
 	}
 	
 	

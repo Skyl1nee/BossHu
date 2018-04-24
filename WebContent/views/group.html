@@ -21,18 +21,80 @@
 		margin-right:8px;
 }
 </style>
+<script type="text/javascript">
+$(function(){
+	reloadData();
+	
+})
+function reloadData(){
+	$.post("/tbl/teacher/getgrouplist.htm",function(ret){
+		$("#group").html("<tr ><td style='width:200px'>成立时间</td><td>组名</td><td  style='width:200px'>班级</td><td >组长</td><td>组长学号</td><td style='width:200px'>操作</td>	</tr>");
+		for(var i=0; i<ret.data.length;i++)
+		{
+			console.info(ret)
+			$("#group").append("<tr><td>" +ret.data[i].createDate + "</td><td>" 
+					+ ret.data[i].groupName+ "</td><td>"
+					+ ret.data[i].className+"</td><td>" 
+					+ ret.data[i].groupLeader +"</td><td>" 
+					+ ret.data[i].groupLeaderNo+"</td><td>" 
+					+ "<a class='btn btn-md btn-danger' onclick='delGroup("+ret.data[i].groupID +")'>删除</a><a style='margin-left:10px' class='btn btn-md btn-primary ' onclick='editGroup()'>修改成员</a></td>	</tr>")
+					
+		}
+	});
+	
+}
+
+function addGroup(){
+
+}
+function delGroup(id){
+	if(id){
+		$.post("/tbl/teacher/delgroup.htm",{id:id},function(ret){
+			alert("删除成功");
+			reloadData();
+		});
+	}
+}
+function editGroup(){
+	
+	
+}
+
+</script>
+
 <body>
 	<div style="width: 70%; margin: 0 auto;">
 	<div class="btngroup pull-right" style="padding:8px 10px">
-		<a class="btn btn-md btn-success ">新增</a>
-		<a class="btn btn-md btn-danger ">删除</a>
-		<a class="btn btn-md btn-primary ">修改成员</a>
+		<a class="btn btn-md btn-success " onclick="addGroup()">新增</a>
+		
+		
 	</div>
 		<table class="table table-hover" id="group">
-			<tr>
-				<td>组名</td><td>成立时间</td><td>班级</td><td>组长</td>
-			</tr>
+			
 		</table>
 	</div>
+	
+	
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
+
+
+
 </html>

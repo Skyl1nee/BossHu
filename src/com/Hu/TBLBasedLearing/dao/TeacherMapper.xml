@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!-- 根节点,定义数据访问接口 -->
+<mapper namespace="com.Hu.TBLBasedLearing.dao.TeacherMapper"> 
+ 	
+ 	<!-- 定义数据库和实体的映射关系 -->
+    <resultMap id="resultMap" type="com.Hu.TBLBasedLearing.entity.Group"> 
+        <id property="GroupID" column="GroupID"/> 
+        <result property="GroupName" 	column="GroupName"/> 
+        <result property="CreateDate" 	column="CreateDate"/> 
+        <result property="DismissDate" 		column="DismissDate"/> 
+     	<result property="TeacherID" 		column="TeacherID"/> 
+        <result property="ClassID" 		column="ClassID"/> 
+        <result property="GroupLeaderID" 		column="GroupLeaderID"/>    
+         <result property="GroupLeader" 		column="UserName"/>    
+         <result property="GroupLeaderNo" 		column="StudentNo"/>  
+         <result property="ClassName" 		column="ClassName"/>  
+    </resultMap>
+    <!-- 根据老师ID查询分组表 --> 
+    <select id="getGroupByUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
+	    <![CDATA[SELECT g.*,u.UserName,u.StudentNo,c.ClassName 
+	    from grouptable g left join usertable u on g.GroupLeaderID = u.UserId 
+	    				  left join classtable c on g.ClassID = c.ClassID
+	         WHERE TeacherID=#{userId}]]>
+    </select> 
+   
+</mapper>

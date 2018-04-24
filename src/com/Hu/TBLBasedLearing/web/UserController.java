@@ -34,16 +34,9 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping("getgrouplist")
-	@ResponseBody
-	public User getgrouplist(HttpServletRequest request){
-		User user = SessionHolder.getUser(request.getSession());		
-		return user;		
-	}
-	
 	@RequestMapping("reg.htm")
 	@ResponseBody
-	public Result test(String username,String password,String roleID,String gender,String classID,HttpServletRequest request){
+	public Result test(String username,String password,int roleID,String gender,int classID,HttpServletRequest request){
 		User user = new User();
 		user.setUserName(username);
 		user.setPassword(password);
@@ -57,8 +50,8 @@ public class UserController {
 		}
 		
 		user.setRoleID(roleID);
-		if(roleID.equals("2")){
-			user.setClassID(null);
+		if(roleID == 2){
+			user.setClassID(0);
 		}
 		else{
 			user.setClassID(classID);
