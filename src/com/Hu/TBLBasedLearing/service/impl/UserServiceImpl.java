@@ -33,4 +33,17 @@ public class UserServiceImpl implements UserService {
 		return new Result(200,user);
 	}
 
+
+	@Override
+	public Result Register(User user) {
+		if(user != null){
+			try{
+				this.userMapper.Register(user);
+			}catch(Exception e) {
+				return new Result(500,"新增失败"); 
+			}
+		}
+		return new Result(200,"新增成功");
+	}
+
 }

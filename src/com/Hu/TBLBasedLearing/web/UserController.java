@@ -1,16 +1,10 @@
 package com.Hu.TBLBasedLearing.web;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.Hu.TBLBasedLearing.entity.User;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.UserService;
@@ -47,10 +41,33 @@ public class UserController {
 		return user;		
 	}
 	
-	@RequestMapping("test")
+	@RequestMapping("reg.htm")
 	@ResponseBody
-	public User test(HttpServletRequest request){
-		User user = SessionHolder.getUser(request.getSession());		
-		return user;		
+	public Result test(String username,String password,String roleID,String gender,String classID,HttpServletRequest request){
+		User user = new User();
+		user.setUserName(username);
+		user.setPassword(password);
+		switch(gender){
+		case"1":
+			user.setGender("男");break;
+		case"2":
+			user.setGender("女");break;
+		case"3":
+			user.setGender("女装大佬");break;
+		}
+		
+		user.setRoleID(roleID);
+		if(roleID.equals("2")){
+			user.setClassID(null);
+		}
+		else{
+			user.setClassID(classID);
+		}		
+		Result result = this.userService.Register(user);
+		if(result.isSuccess()){
+			Result loginResult = this.userService.FindUser(user.getUserName(),user.getPassword());
+			SessionHolder.holder(loginResult.getData(User.class), request.getSession());
+		}				
+		return result;		
 	}
 }

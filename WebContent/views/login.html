@@ -65,7 +65,10 @@
 			$.post("user/login.htm", {username:username, password:password}, function(result){
 				window.location.href ="/tbl/views/index.html"
 			});
-		})
+		});
+		$("#reg-btn").click(function(){
+			window.location.href ="/tbl/views/register.html"
+		});
 		
 	})
 </script>
@@ -92,7 +95,7 @@
 	  		</div>
 	  		<div class="form-group" style="text-align: center">
 		  		<a class="btn btn-primary" id="login-btn">登录</a>
-		  		<a class="btn btn-success" type="reset" style="margin-left:18px">打扰了</a>
+		  		<a class="btn btn-success" id="reg-btn" style="margin-left:18px">打扰了，我还是先注册吧</a>
 	  		</div>
 	  		
 		</form>

@@ -7,4 +7,6 @@ public interface UserMapper {
 	public User FindPwdByname(String UserName);
 	
 	public User FindUser(String UserName,String Password);
+	
+	public void Register(User user);
 }

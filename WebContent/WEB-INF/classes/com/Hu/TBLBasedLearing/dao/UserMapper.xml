@@ -25,4 +25,12 @@
 	    <![CDATA[SELECT *,RoleName from usertable u left join roletable r on r.RoleID = u.RoleID 
 	         WHERE userName=#{0} and Password=#{1}]]>
     </select> 
+    <insert id="Register" parameterType="com.Hu.TBLBasedLearing.entity.User">
+    	<![CDATA[
+            insert into usertable
+            	(UserName,Password,Gender,RoleID,GroupID,ClassID)
+            values
+            	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{GroupID})
+        ]]>
+    </insert>
 </mapper>
