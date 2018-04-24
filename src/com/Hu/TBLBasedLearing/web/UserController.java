@@ -46,4 +46,11 @@ public class UserController {
 		User user = SessionHolder.getUser(request.getSession());		
 		return user;		
 	}
+	
+	@RequestMapping("test")
+	@ResponseBody
+	public User test(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());		
+		return user;		
+	}
 }
