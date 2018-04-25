@@ -16,6 +16,8 @@
          <result property="GroupLeaderNo" 		column="StudentNo"/>  
          <result property="ClassName" 		column="ClassName"/>  
     </resultMap>
+
+    
     <!-- 根据老师ID查询分组表 --> 
     <select id="getGroupByUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
 	    <![CDATA[SELECT g.*,u.UserName,u.StudentNo,c.ClassName 
@@ -23,5 +25,6 @@
 	    				  left join classtable c on g.ClassID = c.ClassID
 	         WHERE TeacherID=#{userId}]]>
     </select> 
+ 
    
 </mapper>

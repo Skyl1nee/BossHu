@@ -10,6 +10,8 @@ public class User {
 	private int GroupID;
 	private int ClassID;
 	private String RoleName;
+	private String ClassName;
+	private String StudentNo;
 	public int getUserID() {
 		return UserID;
 	}
@@ -57,6 +59,18 @@ public class User {
 	}
 	public void setRoleName(String roleName) {
 		RoleName = roleName;
+	}
+	public String getClassName() {
+		return ClassName;
+	}
+	public void setClassName(String className) {
+		ClassName = className;
+	}
+	public String getStudentNo() {
+		return StudentNo;
+	}
+	public void setStudentNo(String studentNo) {
+		StudentNo = studentNo;
 	}
 	
 	

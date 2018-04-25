@@ -80,4 +80,12 @@ public class UserController {
 		Result result = this.userService.Updatepwd(user);	
 		return result;		
 	}
+	
+	@RequestMapping("getuserlist.htm")
+	@ResponseBody
+	public Result getUserList(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		
+		return this.userService.getStuByUserId(user.getUserID());	
+	}
 }

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>组建小组</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+
+ <script src="/tbl/js/eModal.min.js"></script>
+  </head>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+$(function(){
+	reloadData();
+	
+	$("#submitbtn").click(function (){
+		top.eModal.confirm("确定要提交吗", "确认")
+	       .then(function(){
+	    	   var ids = [];
+	    	   $("#chosenList option").each(function () {
+	    	        ids.push($(this).val() + ",");
+	    	    });
+	    	   var str = ids.toString();
+	    	   str = str.substring(0,str.length-1);
+	       
+	       // TODO 提交
+	       }, {});
+	});
+	
+	
+})
+function reloadData(){
+	$.post("/tbl/user/getuserlist.htm",function(ret){
+		console.info(ret);
+		$("#users").html("<tr ><td >姓名</td><td>性别</td><td >班级</td><td >学号</td><td >操作</td>	</tr>");
+		for(var i=0; i<ret.data.length;i++)
+		{
+			$("#users").append("<tr><td>" +ret.data[i].userName + "</td><td>" 
+					+ ret.data[i].gender+ "</td><td>"
+					+ ret.data[i].className+"</td><td>" 
+					+ ret.data[i].studentNo+"</td><td>" 
+					+ "<a class='btn btn-md btn-danger' onclick='toggle(&quot;"+ret.data[i].userName+"&quot;,&quot;" +ret.data[i].userID +"&quot;,$(this) )'>选择</a></td>	</tr>")
+					
+		}
+	});
+	
+}
+
+function toggle(name,val,item) {
+    var exist = false;
+    $("#chosenList option").each(function () {
+        var id = $(this).val();
+        if (id == val) {
+            item.html('选择');
+            
+            $(this).remove();
+            exist = true;
+        }
+    });
+
+    if (val && !exist) {
+        item.html('已选择');
+        var opt = document.createElement("option");
+
+        opt.text = name;
+        opt.value = val;
+
+        var select = $("#chosenList")[0].options.add(opt);
+    } 
+}
+
+
+</script>
+
+<body>
+	<div style="width: 70%; margin: 0 auto;">
+		<table class="table table-hover" id="users">
+			
+		</table>
+	</div>
+	<div style="width: 70%;margin: 0 auto;">
+	<select class="select" multiple="multiple" id="chosenList" style="display:none"></select>
+		<a class="btn btn-success pull right" id="submitbtn"> 提交</a>
+	</div>
+	 
+</body>
+
+
+
+</html>

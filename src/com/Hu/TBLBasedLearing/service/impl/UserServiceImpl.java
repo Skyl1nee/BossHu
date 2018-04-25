@@ -1,5 +1,7 @@
 package com.Hu.TBLBasedLearing.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,20 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return new Result(200,"修改成功");
+	}
+
+
+	@Override
+	public Result getStuByUserId(int userId) {
+		
+		List<User> list;
+		try {
+			list = userMapper.getStuByUserId(userId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		
+		return new Result(200,list);
 	}
 
 }

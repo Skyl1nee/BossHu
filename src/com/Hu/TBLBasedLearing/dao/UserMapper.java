@@ -1,5 +1,7 @@
 package com.Hu.TBLBasedLearing.dao;
 
+import java.util.List;
+
 import com.Hu.TBLBasedLearing.entity.User;
 
 public interface UserMapper {
@@ -13,4 +15,7 @@ public interface UserMapper {
 	public void updatepwd(User user);
 	
 	public void updateInfo(User user);
+	
+	public List<User> getStuByUserId(int userId);
+	
 }

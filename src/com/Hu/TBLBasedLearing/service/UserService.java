@@ -14,4 +14,7 @@ public interface UserService {
 	public Result Updatepwd(User user);
 	
 	public Result UpdateInfo(User user);
+	
+	public Result getStuByUserId(int userId);
+	
 }
