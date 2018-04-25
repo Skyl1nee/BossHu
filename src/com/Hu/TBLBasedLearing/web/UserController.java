@@ -63,4 +63,21 @@ public class UserController {
 		}				
 		return result;		
 	}
+	@RequestMapping("changepwd.htm")
+	@ResponseBody
+	public Result Changepwd(String password,HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		user.setPassword(password);
+		Result result = this.userService.Updatepwd(user);
+		return result;
+	}
+	@RequestMapping("updateinfo.htm")
+	@ResponseBody
+	public Result UpdateInfo(int classID,String gender,HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		user.setClassID(classID);
+		user.setGender(gender);
+		Result result = this.userService.Updatepwd(user);	
+		return result;		
+	}
 }

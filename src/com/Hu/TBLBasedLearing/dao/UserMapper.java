@@ -9,4 +9,8 @@ public interface UserMapper {
 	public User FindUser(String UserName,String Password);
 	
 	public void Register(User user);
+	
+	public void updatepwd(User user);
+	
+	public void updateInfo(User user);
 }

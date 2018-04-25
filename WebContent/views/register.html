@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>欢迎注册</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+<script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+<script>
+$(function(){		
+	
+	$('form').bootstrapValidator({
+　　　　　　　　message: 'This value is not valid',	            　
+            fields: {
+            	username: {
+                    message: '用户名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                },
+                rpassword:{
+                	validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        identical: {
+                        	field: 'password',
+                    		message: '两次密码不一致'
+                        	 },
+                    	different: {
+                    		field: 'username',
+                    		message: '密码不能与用户名相同'
+                        	}
+                    }
+                }
+            }
+        });
+	
+	$.post("/tbl/class/findall.htm",function(classes){	
+		/* var buffer = ""; */
+		if(classes != null){
+			for(var i = 0;i < classes.length;i++){
+				$("#class").append("<option value ='" + classes[i].classID + "'>" + classes[i].className + "</option>" );
+			}	
+			/* $("#class").append(buffer); */
+		}
+	});
+	
+	$("#register-btn").click(function(){
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var rpassword = $("#rpassword").val();
+		var rolename = $("#role option:selected").val();
+		var roleID;
+		var gender = $("#gender option:selected").val();
+		var classID = $("#class").val();
+		switch(rolename){
+			case "student":
+				roleID = 1;break;
+			case "teacher":
+				roleID = 2;break;
+			case "instructor":
+				roleID = 3;break;
+		}
+		if(password !="" && rpassword != "" && password == rpassword){
+			$.post("/tbl/user/reg.htm",{username:username,password:password,roleID:roleID,gender:gender,classID:classID},function(result){
+				if(result.code == 200){
+					window.location.href ="/tbl/views/index.html";
+				}else{
+					alert("发生了错误，好好想想你过去的所作所为。");
+				}
+			})				
+		}else{
+			$("#loginform").data("bootstrapValidator").validate();				
+		}			
+	});
+})
+</script>
+</head>
+<body style="position:fixed;width:100%;height:100%;background:url(images/background.jpg);background-repeat: no-repeat;background-size: 100%;">
+	<div style="width: 30%; margin: 0 auto;">
+		<div class="page-header">
+		  
+		  <h1 style="text-align:center">用户注册 </h1>
+		  <div style="margin: 0 auto;width:18%;height:3px;background-color:#E94266"></div>
+		</div>
+	 	<form method="post" class="form-horizontal" id="loginform">
+	 		<div class="form-group">
+	  			<label for="username" class= "col-sm-2 control-label">用户名：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="username" id="username" data-bv-notempty-message="The username is required and cannot be empty"/>
+	  			</div>
+	  		</div>
+	  		<div class="form-group">
+	  			<label for="password" class= "col-sm-2 control-label">密码：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="password" name="password" id="password"/>
+	  			</div>
+	  		</div>
+	  		<div class="form-group">
+	  			<label for="password" class= "col-sm-2 control-label">确认密码：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="password" name="rpassword" id="rpassword"/>
+	  			</div>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="role" class= "col-sm-2 control-label">我的身份是：</label>
+		  		<select class="col-sm-10" name="role" id="role">
+				  <option value ="student">学生</option>
+				  <option value ="teacher">老师</option>
+				  <option value="instructor">辅导员</option>	
+				</select>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="class" class= "col-sm-2 control-label">我所属班级是：</label>
+		  		<select class="col-sm-10" name="class" id="class">				  
+				</select>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="gender" class= "col-sm-2 control-label">我是：</label>
+		  		<select class="col-sm-10" name="gender" id="gender">
+				  <option value ="1">萌妹</option>
+				  <option value ="2">嘤嘤嘤</option>
+				  <option value="3">女装萌妹</option>	
+				</select>
+	  		</div>
+	  		<div class="form-group" style="text-align: center">
+		  		<a class="btn btn-primary" id="register-btn" name="register-btn">注册</a>
+		  		<a class="btn btn-success" type="reset" style="margin-left:18px">打扰了</a>
+	  		</div>
+	  		
+		</form>
+	</div>
+</body>
+</html>

@@ -46,4 +46,30 @@ public class UserServiceImpl implements UserService {
 		return new Result(200,"新增成功");
 	}
 
+
+	@Override
+	public Result Updatepwd(User user) {
+		if(user != null){
+			try{
+				this.userMapper.updatepwd(user);
+			}catch(Exception e) {
+				return new Result(500,"修改失败"); 
+			}
+		}
+		return new Result(200,"修改成功");
+	}
+
+
+	@Override
+	public Result UpdateInfo(User user) {
+		if(user != null){
+			try{
+				this.userMapper.Register(user);
+			}catch(Exception e) {
+				return new Result(500,"修改失败"); 
+			}
+		}
+		return new Result(200,"修改成功");
+	}
+
 }

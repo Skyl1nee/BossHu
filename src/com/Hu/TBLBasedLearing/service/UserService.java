@@ -10,4 +10,8 @@ public interface UserService {
 	public Result FindUser(String UserName, String Password);
 	
 	public Result Register(User user);
+	
+	public Result Updatepwd(User user);
+	
+	public Result UpdateInfo(User user);
 }

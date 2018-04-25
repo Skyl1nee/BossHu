@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!-- 根节点,定义数据访问接口 -->
+<mapper namespace="com.Hu.TBLBasedLearing.dao.ClassMapper"> 
+ 	
+ 	<!-- 定义数据库和实体的映射关系 -->
+    <resultMap id="resultMap" type="com.Hu.TBLBasedLearing.entity.ClassInfo"> 
+        <id property="ClassID" 			column="ClassID"/> 
+        <result property="ClassName" 	column="ClassName"/> 
+        <result property="Level" 		column="Level"/> 
+        <result property="Remark" 		column="Remark"/>    	
+    </resultMap>
+    <select id="findall" resultMap="resultMap">
+    	 <![CDATA[select * from classtable
+    	 	]]>
+    </select>
+</mapper>

@@ -12,36 +12,95 @@
 <link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
 <!-- 引入已经压缩的js文件 -->
  <script src="/tbl/js/bootstrap.min.js"></script>
- 
+ <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
 <!-- Bootstrap core CSS -->
 <link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
 <script>
 	$(function(){
+		var oldpassword;
+		$('form').bootstrapValidator({
+	　　　　　　　　message: 'This value is not valid',	            　
+	            fields: {	            	
+	                password: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: '密码不能为空'
+	                        }
+	                    }
+	                },
+	                cpassword:{
+	                	validators: {
+	                        notEmpty: {
+	                            message: '密码不能为空'
+	                        },
+	                        identical: {
+	                        	field: 'password',
+	                    		message: '两次密码不一致'
+	                        	 },
+	                    	different: {
+	                    		field: 'username',
+	                    		message: '密码不能与用户名相同'
+	                        	}
+	                    }
+	                }
+	            }
+	        });
+		
 		$.post("/tbl/user/index.htm",function(user){
+			oldpassword = user.password;
 			var name = user.userName;
 			var rolename;
 			alert(name);
 			switch(user.roleID){
-				case "1":
+				case 1:
 					rolename = "student";break;
-				case "2":
+				case 2:
 					rolename = "teacher";break;
-				case "3":
+				case 3:
 					rolename = "student";break;			
 			}
 			var iframeUrl = "/tbl/views/" + rolename + "Iframe.html";
-			$("#content").attr("src",iframeUrl);
-			
-			
-			
-			
-			
+			$("#content").attr("src",iframeUrl);				
 		});
+		
+		$("#changepwd-btn").click(function(){
+			$("#updatepwd-modal").modal('show');
+		})
+		
+		$("#updatepwd-btn").click(function(){
+			var password = $("#password1").val();
+			var cpassword = $("#password2").val();
+			var oldpassword1 = $("#oldpassword").val();
+			if(password != cpassword){
+				alert("两次密码不同！");
+			}
+			else{
+				if(oldpassword == oldpassword1){
+					if(oldpassword != password){
+						$.post("/tbl/user/changepwd.htm",{password:password},function(result){
+						if(result.code == 200){
+							$("#updatepwd-modal").modal('hide');
+							alert("修改成功！");
+							}
+						});
+					}
+					else{
+						alert("新密码与原密码相同");
+					}
+				}
+				else{
+					alert("原密码错误");
+				}
+			}
+			
+		});			
 	})
 </script>
  </head>
 
-  <body>
+  <body style="position:fixed;width:100%;height:100%;background:url(/tbl/views/images/indexBack.jpg);background-repeat: no-repeat;background-size: 100%;">
+  <div style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;text-align: center;background:rgba(255,255,255,0.3)">
     <!-- Static navbar -->
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
@@ -69,13 +128,13 @@
               </ul>
             </li>
              <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户设置 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="#">查看个人信息</a></li>
+                <li><a href="#">修改个人信息</a></li>
+                <li><a href="#" id="changepwd-btn">修改密码</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
+                <li class="dropdown-header">退出登录</li>
                 <li><a href="#">Separated link</a></li>
                 <li><a href="#">One more separated link</a></li>
               </ul>
@@ -83,7 +142,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="../navbar/">Default</a></li>
-            <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
+            <li><a href="./">Static top <span class="sr-only">(current)</span></a></li>
             <li><a href="../navbar-fixed-top/">Fixed top</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -95,6 +154,37 @@
 	<iframe id="content" frameborder="0" width="100%" height="800" style="margin: auto;"></iframe>
     </div> <!-- /container -->
 
-
+</div>
+<div class="modal fade bs-example-modal-sm" id="updatepwd-modal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="changepwdform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">修改密码</h4>
+	      </div>
+	      <div class="modal-body">
+	       <div class="input-group">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="password" id="oldpassword" class="form-control" placeholder="原密码">
+			</div>
+	        <div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="password" id="password1" class="form-control" placeholder="密码">
+			</div>
+			<div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="password" id="password2" class="form-control" placeholder="确认密码">
+			</div>			
+	      </div>
+	      <div class="modal-footer">
+	        
+	        <button type="button" class="btn btn-primary" id="updatepwd-btn">修改</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
   </body>
 </html>

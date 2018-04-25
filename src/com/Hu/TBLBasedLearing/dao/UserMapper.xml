@@ -11,8 +11,7 @@
         <result property="Gender" 		column="Gender"/> 
      	<result property="RoleID" 		column="RoleID"/> 
         <result property="GroupID" 		column="GroupID"/> 
-        <result property="ClassID" 		column="ClassID"/>    
-           
+        <result property="ClassID" 		column="ClassID"/>          
         <result property="RoleName" 		column="RoleName"/>    
     </resultMap>
     <!-- 根据用户名查询用户 --> 
@@ -33,4 +32,12 @@
             	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{GroupID})
         ]]>
     </insert>
+    <update id="updatepwd">
+    	<![CDATA[ update usertable set Password = #{Password}
+	         WHERE UserID=#{UserID}]]>
+    </update>
+     <update id="updateInfo">
+    	<![CDATA[ update usertable set Gender = #{Password},ClassID = {ClassID}
+	         WHERE UserID=#{UserID}]]>
+    </update>
 </mapper>
