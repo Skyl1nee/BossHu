@@ -13,7 +13,7 @@
  
     <script src="js/validator/bootstrapValidator.min.js"></script>
     <link href="css/validator/bootstrapValidator.min.css" rel="stylesheet" />
-
+<link rel='icon' href='/tbl/views/images/logo.ico ' type='image/x-ico' />
 <script>
 	$(function(){
 		
@@ -63,7 +63,12 @@
 				return;
 			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
-				window.location.href ="/tbl/views/index.html"
+				if(result.code == 200){
+					window.location.href ="/tbl/views/index.html"
+				}
+				else{
+					alert("用户名或密码错误");
+				}
 			});
 		});
 		$("#reg-btn").click(function(){

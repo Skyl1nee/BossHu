@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 	public Result UpdateInfo(User user) {
 		if(user != null){
 			try{
-				this.userMapper.Register(user);
+				this.userMapper.updateInfo(user);
 			}catch(Exception e) {
 				return new Result(500,"修改失败"); 
 			}

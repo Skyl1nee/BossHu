@@ -25,6 +25,14 @@
 	    				  left join classtable c on g.ClassID = c.ClassID
 	         WHERE TeacherID=#{userId}]]>
     </select> 
+    <!-- 根据学生ID查询分组信息 --> 
+    <select id="getGroupByStuUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
+	    <![CDATA[select g.GroupID,g.GroupName,g.CreateDate,g.DismissDate,g.TeacherID  FROM grouptable g
+				INNER JOIN usergroup ug ON g.GroupID = ug.GroupID 
+				INNER JOIN usertable u ON u.UserID = ug.UserID
+				WHERE
+				u.UserID = #{userId}]]>
+    </select> 
  
    
 </mapper>

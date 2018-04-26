@@ -8,5 +8,7 @@ import com.Hu.TBLBasedLearing.entity.Group;
 public interface TeacherMapper {
 
 	public List<Group> getGroupByUserId(int userId);
-
+	
+	public List<Group> getGroupByStuUserId(int userId);
+	
 }

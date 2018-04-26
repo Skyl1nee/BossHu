@@ -19,40 +19,23 @@
 <script>
 	$(function(){
 		var oldpassword;
-		$('form').bootstrapValidator({
-	　　　　　　　　message: 'This value is not valid',	            　
-	            fields: {	            	
-	                password: {
-	                    validators: {
-	                        notEmpty: {
-	                            message: '密码不能为空'
-	                        }
-	                    }
-	                },
-	                cpassword:{
-	                	validators: {
-	                        notEmpty: {
-	                            message: '密码不能为空'
-	                        },
-	                        identical: {
-	                        	field: 'password',
-	                    		message: '两次密码不一致'
-	                        	 },
-	                    	different: {
-	                    		field: 'username',
-	                    		message: '密码不能与用户名相同'
-	                        	}
-	                    }
-	                }
-	            }
-	        });
-		
+		var name;
+		var rolename;
+		var gender;
+		var groupID;
+		var className;
+		var studentNo;
+		var roleID;
 		$.post("/tbl/user/index.htm",function(user){
 			oldpassword = user.password;
-			var name = user.userName;
-			var rolename;
-			alert(name);
-			switch(user.roleID){
+			name = user.userName;
+			rolename = user.roleName;
+			gender = user.gender;
+			groupID = user.groupID;
+			className = user.className;
+			studentNo = user.studentNo;
+			roleID = user.roleID;
+			switch(roleID){
 				case 1:
 					rolename = "student";break;
 				case 2:
@@ -66,7 +49,50 @@
 		
 		$("#changepwd-btn").click(function(){
 			$("#updatepwd-modal").modal('show');
+		});
+		
+		$("#info-btn").click(function(){
+			$("#usrinfo-name").text(name);
+			$("#usrinfo-gender").text(gender);
+			$("#usrinfo-groupID").text(groupID);
+			$("#usrinfo-roleName").text(rolename);
+			$("#usrinfo-className").text(className);
+			$("#usrinfo-stuNo").text(studentNo);
+			$("#personInfo-modal").modal('show');
+		});
+		
+		$("#chinfo-btn").click(function(){
+			if(roleID == 1){
+				$("#chinfo-classdiv").show();
+				$("#chinfo-stuNodiv").show();
+				$.post("/tbl/class/findall.htm",function(classes){	
+					if(classes != null){
+						for(var i = 0;i < classes.length;i++){
+							$("#chinf-class").append("<option value ='" + classes[i].classID + "'>" + classes[i].className + "</option>" );
+						}	
+					}
+				});
+			}
+			else{
+				$("#chinfo-classdiv").hide();
+				$("#chinfo-stuNodiv").hide();
+			}
+			$("#chInfo-modal").modal('show');
 		})
+		
+		$("#chinf-btn").click(function(){
+			var upclassID = $("#chinf-class option:selected").val();
+			var upgender = $("#chinf-gender option:selected").val();
+			var upstuNo = $("#chinf-stuNo").val();
+			var upclassName = $("#chinf-class option:selected").text();
+			$.post("/tbl/user/updateinfo.htm",{upclassID:upclassID,upgender:upgender,upstuNo:upstuNo,upclassName:upclassName},function(result){
+				if(result.code == 200){
+					$("#chInfo-modal").modal('hide');
+					alert("修改成功！");
+					location.reload();
+					}
+				});
+			});		
 		
 		$("#updatepwd-btn").click(function(){
 			var password = $("#password1").val();
@@ -82,6 +108,7 @@
 						if(result.code == 200){
 							$("#updatepwd-modal").modal('hide');
 							alert("修改成功！");
+							location.reload();
 							}
 						});
 					}
@@ -95,7 +122,7 @@
 			}
 			
 		});			
-	})
+	});
 </script>
  </head>
 
@@ -130,8 +157,8 @@
              <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户设置 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">查看个人信息</a></li>
-                <li><a href="#">修改个人信息</a></li>
+                <li><a href="#" id="info-btn">查看个人信息</a></li>
+                <li><a href="#" id="chinfo-btn">修改个人信息</a></li>
                 <li><a href="#" id="changepwd-btn">修改密码</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">退出登录</li>
@@ -180,6 +207,90 @@
 	      <div class="modal-footer">
 	        
 	        <button type="button" class="btn btn-primary" id="updatepwd-btn">修改</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="personInfo-modal">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="useinfoform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">个人信息</h4>
+	      </div>
+	      <div class="modal-body">
+	       	<div class="form-group">
+	  			<label for="usrinfo-name" class= "col-sm-4 control-label">用户名：</label>	  			
+	  			<p id="usrinfo-name" class="col-sm-8" style="margin-top: 6px;"></p>	  			
+	  		</div>
+	  		<div class="form-group">
+	  			<label class= "col-sm-4 control-label">性&nbsp;别：</label>
+	  			<p id="usrinfo-gender" class="col-sm-8" style="margin-top: 6px;"></p>
+	  		</div>
+	  		<div class="form-group">
+	  			<label for="password" class= "col-sm-4 control-label">组&nbsp;号：</label>
+	  			<p id="usrinfo-groupID" class="col-sm-8" style="margin-top: 6px;"></p>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="role" class= "col-sm-4 control-label">角&nbsp;色：</label>
+		  		<p id="usrinfo-roleName" class="col-sm-8" style="margin-top: 6px;"></p>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="class" class= "col-sm-4 control-label">班&nbsp;级：</label>
+		  		<p id="usrinfo-className" class="col-sm-8" style="margin-top: 6px;"></p>
+	  		</div>
+	  		<div class="form-group">
+		  		<label for="gender" class= "col-sm-4 control-label">学&nbsp;号：</label>
+		  		<p id="usrinfo-stuNo" class="col-sm-8" style="margin-top: 6px;"></p>
+	  		</div>
+	      </div>
+	      <div class="modal-footer">  
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="chInfo-modal">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="chuseinfoform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">修改个人信息</h4>
+	      </div>
+	      <div class="form-group" style="margin-top: 5px;">
+		  		<label for="gender" class= "col-sm-2 control-label">我是：</label>
+		  		<div class="col-sm-9">
+			  		<select class="form-control" name="gender" id="chinf-gender">
+					  <option value ="1">萌妹</option>
+					  <option value ="2">嘤嘤嘤</option>
+					  <option value="3">女装萌妹</option>	
+					</select>
+				</div>
+	  		</div>
+	      <div class="modal-body" id="chinfo-classdiv" style="display: none;margin-top: 5px">
+	       		<div class="form-group">
+		  		<label for="class" class= "col-sm-2 control-label">班级：</label>
+		  		<div class="col-sm-9">
+			  		<select class="form-control" name="chinf-class" id="chinf-class">				  
+					</select>
+				</div>
+	  		</div>	  		
+	  		<div class="form-group" id="chinfo-stuNodiv" style="display: none;margin-top: 5px">
+		  		<label for="gender" class= "col-sm-2 control-label">学号：</label>
+		  		<div class="col-sm-9">
+	  				<input class="form-control" type="text" name="chinf-stuNo" id="chinf-stuNo"/>
+	  			</div>
+	  		</div>
+	      </div>
+	      <div class="modal-footer">  
+	      	<button type="button" class="btn btn-primary" id="chinf-btn">修改</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	      </div>
 	      </form>

@@ -10,7 +10,6 @@ public class Group {
 	private String ClassName;
 	private int GroupLeaderID;
 	private String GroupLeader;
-
 	private String GroupLeaderNo;
 	
 	public String getClassName() {

@@ -52,12 +52,10 @@ $(function(){
         });
 	
 	$.post("/tbl/class/findall.htm",function(classes){	
-		/* var buffer = ""; */
 		if(classes != null){
 			for(var i = 0;i < classes.length;i++){
 				$("#class").append("<option value ='" + classes[i].classID + "'>" + classes[i].className + "</option>" );
 			}	
-			/* $("#class").append(buffer); */
 		}
 	});
 	
@@ -69,6 +67,7 @@ $(function(){
 		var roleID;
 		var gender = $("#gender option:selected").val();
 		var classID = $("#class").val();
+		var stuNo = $("#stuNo").val();
 		switch(rolename){
 			case "student":
 				roleID = 1;break;
@@ -78,7 +77,7 @@ $(function(){
 				roleID = 3;break;
 		}
 		if(password !="" && rpassword != "" && password == rpassword){
-			$.post("/tbl/user/reg.htm",{username:username,password:password,roleID:roleID,gender:gender,classID:classID},function(result){
+			$.post("/tbl/user/reg.htm",{username:username,password:password,roleID:roleID,gender:gender,classID:classID,stuNo:stuNo},function(result){
 				if(result.code == 200){
 					window.location.href ="/tbl/views/index.html";
 				}else{
@@ -89,7 +88,16 @@ $(function(){
 			$("#loginform").data("bootstrapValidator").validate();				
 		}			
 	});
-})
+});
+function checkrole(){
+	var rolename = $("#role option:selected").val();
+	if(rolename == "student"){
+		$("#regclass").show();		
+	}
+	else{
+		$("#regclass").hide();
+	}
+}
 </script>
 </head>
 <body style="position:fixed;width:100%;height:100%;background:url(images/background.jpg);background-repeat: no-repeat;background-size: 100%;">
@@ -120,24 +128,36 @@ $(function(){
 	  		</div>
 	  		<div class="form-group">
 		  		<label for="role" class= "col-sm-2 control-label">我的身份是：</label>
-		  		<select class="col-sm-10" name="role" id="role">
-				  <option value ="student">学生</option>
-				  <option value ="teacher">老师</option>
-				  <option value="instructor">辅导员</option>	
-				</select>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="role" id="role" onchange="checkrole()">					  
+					  <option value ="teacher">老师</option>
+					  <option value ="student">学生</option>
+					  <option value="instructor">辅导员</option>	
+					</select>
+				</div>
 	  		</div>
-	  		<div class="form-group">
+	  		<div class="form-group" id="regstuNo" style="display: none;">
+	  			<label for="username" class= "col-sm-2 control-label">学号：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="stuNo" id="stuNo" data-bv-notempty-message="The username is required and cannot be empty"/>
+	  			</div>
+	  		</div>
+	  		<div class="form-group" id="regclass" style="display: none;">
 		  		<label for="class" class= "col-sm-2 control-label">我所属班级是：</label>
-		  		<select class="col-sm-10" name="class" id="class">				  
-				</select>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="class" id="class">				  
+					</select>
+				</div>
 	  		</div>
 	  		<div class="form-group">
 		  		<label for="gender" class= "col-sm-2 control-label">我是：</label>
-		  		<select class="col-sm-10" name="gender" id="gender">
-				  <option value ="1">萌妹</option>
-				  <option value ="2">嘤嘤嘤</option>
-				  <option value="3">女装萌妹</option>	
-				</select>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="gender" id="gender">
+					  <option value ="1">萌妹</option>
+					  <option value ="2">嘤嘤嘤</option>
+					  <option value="3">女装大佬</option>	
+					</select>
+				</div>
 	  		</div>
 	  		<div class="form-group" style="text-align: center">
 		  		<a class="btn btn-primary" id="register-btn" name="register-btn">注册</a>

@@ -36,25 +36,25 @@ public class UserController {
 	
 	@RequestMapping("reg.htm")
 	@ResponseBody
-	public Result test(String username,String password,int roleID,String gender,int classID,HttpServletRequest request){
+	public Result test(String username,String password,int roleID,String gender,int classID,String stuNo,HttpServletRequest request){
 		User user = new User();
 		user.setUserName(username);
 		user.setPassword(password);
 		switch(gender){
-		case"1":
-			user.setGender("男");break;
 		case"2":
+			user.setGender("男");break;
+		case"1":
 			user.setGender("女");break;
 		case"3":
 			user.setGender("女装大佬");break;
 		}
 		
 		user.setRoleID(roleID);
-		if(roleID == 2){
-			user.setClassID(0);
+		if(roleID == 1){
+			user.setClassID(classID);
+			user.setStudentNo(stuNo);
 		}
 		else{
-			user.setClassID(classID);
 		}		
 		Result result = this.userService.Register(user);
 		if(result.isSuccess()){
@@ -73,11 +73,20 @@ public class UserController {
 	}
 	@RequestMapping("updateinfo.htm")
 	@ResponseBody
-	public Result UpdateInfo(int classID,String gender,HttpServletRequest request){
+	public Result UpdateInfo(int upclassID,String upgender,String upstuNo,String upclassName,HttpServletRequest request){
 		User user = SessionHolder.getUser(request.getSession());
-		user.setClassID(classID);
-		user.setGender(gender);
-		Result result = this.userService.Updatepwd(user);	
+		if(upclassID != 0 && upstuNo!=""){
+			user.setClassID(upclassID);
+			user.setStudentNo(upstuNo);
+			user.setClassName(upclassName);
+		}
+		switch(upgender){
+		case"1":user.setGender("女");break;
+		case"2":user.setGender("男");break;
+		case"3":user.setGender("女装大佬");break;
+		}
+		
+		Result result = this.userService.UpdateInfo(user);	
 		return result;		
 	}
 	

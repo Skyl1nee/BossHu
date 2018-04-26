@@ -13,6 +13,8 @@
         <result property="GroupID" 		column="GroupID"/> 
         <result property="ClassID" 		column="ClassID"/>          
         <result property="RoleName" 		column="RoleName"/>    
+        <result property="ClassName" 		column="ClassName"/>    
+         <result property="StudentNo" 		column="StudentNo"/>  
     </resultMap>
     <!-- 根据用户名查询用户 --> 
     <select id="FindPwdByname" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
@@ -21,15 +23,15 @@
     </select> 
     
     <select id="FindUser" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
-	    <![CDATA[SELECT *,RoleName from usertable u left join roletable r on r.RoleID = u.RoleID 
+	    <![CDATA[SELECT *,RoleName from usertable u left join roletable r on r.RoleID = u.RoleID left join classtable c on u.ClassID = c.ClassID
 	         WHERE userName=#{0} and Password=#{1}]]>
     </select> 
     <insert id="Register" parameterType="com.Hu.TBLBasedLearing.entity.User">
     	<![CDATA[
             insert into usertable
-            	(UserName,Password,Gender,RoleID,GroupID,ClassID)
+            	(UserName,Password,Gender,RoleID,GroupID,ClassID,StudentNo)
             values
-            	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{GroupID})
+            	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{GroupID},#{StudentNo})
         ]]>
     </insert>
     <update id="updatepwd">
@@ -37,7 +39,13 @@
 	         WHERE UserID=#{UserID}]]>
     </update>
      <update id="updateInfo">
-    	<![CDATA[ update usertable set Gender = #{Password},ClassID = {ClassID}
+    	<![CDATA[ update usertable set Gender = #{Gender},ClassID = #{ClassID},StudentNo= #{StudentNo}
 	         WHERE UserID=#{UserID}]]>
     </update>
+    
+          <!-- 根据老师ID查询分组表 --> 
+    <select id="getStuByUserId" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
+	    <![CDATA[
+    select u.*,c.ClassName FROM usertable u LEFT JOIN classtable c on u.ClassID = c.ClassID WHERE u.ClassID IN(SELECT ClassID FROM usertable where userid =#{userId}) AND RoleID = '1']]>
+    </select> 
 </mapper>

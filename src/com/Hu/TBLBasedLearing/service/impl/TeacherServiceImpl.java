@@ -22,5 +22,9 @@ public class TeacherServiceImpl implements TeacherService {
 		List<Group> groups = teacherMapper.getGroupByUserId(userId);
 		return new Result(200,groups);
 	}
-
+	@Override
+	public List<Group> getGroupListByStuID(int userId) {
+		List<Group> groups = teacherMapper.getGroupByStuUserId(userId);
+		return groups;
+	}
 }

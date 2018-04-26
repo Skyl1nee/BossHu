@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.Hu.TBLBasedLearing.dao.TaskMapper"> 
+ 	
+ 	<!-- 定义数据库和实体的映射关系 -->
+    <resultMap id="resultMap" type="com.Hu.TBLBasedLearing.entity.Task"> 
+        <id property="TaskID" 			column="TaskID"/> 
+        <result property="TaskDetails" 	column="TaskDetails"/> 
+        <result property="TeacherID" 	column="TeacherID"/> 
+        <result property="GroupID" 		column="GroupID"/> 
+     	<result property="Status" 		column="Status"/> 
+        <result property="CreateDate" 	column="CreateDate"/> 
+        <result property="EndDate" 		column="EndDate"/>          
+        <result property="FilePath" 		column="FilePath"/>    
+        <result property="Level" 		column="Level"/>    
+        <result property="TeacherName" 		column="TeacherName"/>  
+    </resultMap>
+    
+</mapper>
+    

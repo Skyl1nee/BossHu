@@ -1,10 +1,14 @@
 package com.Hu.TBLBasedLearing.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.Hu.TBLBasedLearing.entity.Group;
 import com.Hu.TBLBasedLearing.entity.User;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.TeacherService;
@@ -29,6 +33,13 @@ public class TeacherController {
 		}
 		
 		return teacherService.getGroupList(user.getUserID());		
+	}
+	@RequestMapping("getStugrouplist.htm")
+	@ResponseBody
+	public List<Group> getStuGroupList(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		List<Group> groups = this.teacherService.getGroupListByStuID(user.getUserID());
+		return groups;		
 	}
 
 }

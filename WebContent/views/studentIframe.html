@@ -2,9 +2,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>studentIframe</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+ <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+<script>
+	$(function(){
+		$.post("/tbl/teacher/getStugrouplist.htm",function(groups){
+			$("#group").html("<tr ><td style='width:200px'>组编号</td><td>组名</td><td  style='width:200px'>创建时间</td><td >解散时间</td><td>老师id</td> </tr>");
+			for(var i=0; i<groups.length;i++)
+			{
+				$("#group").append("<tr><td>" +groups[i].groupID + "</td><td>" 
+						+ groups[i].groupName+ "</td><td>"
+						+ groups[i].createDate+"</td><td>" 
+						+ groups[i].dismissDate +"</td><td>" 
+						+ groups[i].teacherID+"</td><td>")
+						
+			}
+		})
+	});
+</script>
 </head>
 <body>
-student！！！
+<div>
+	<div class="panel panel-default">
+	  	<div class="panel-heading">我的任务</div>
+	  	<div class="panel-body">
+	    	任务信息
+	  	</div>
+	</div>	
+</div>
+<div>
+	<div class="panel panel-default">
+	  	<div class="panel-heading">我的分组</div>
+	  	<div class="panel-body">
+	    	<table class="table table-hover" id="group">
+			
+			</table>
+	  	</div>
+	</div>	
+</div>
+
 </body>
 </html>
