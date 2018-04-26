@@ -16,6 +16,6 @@ public interface UserMapper {
 	
 	public void updateInfo(User user);
 	
-	public List<User> getStuByUserId(int userId);
+	public List<User> getStuByUserId(int userId,int groupId);
 	
 }

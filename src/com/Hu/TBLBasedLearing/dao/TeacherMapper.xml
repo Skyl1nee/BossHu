@@ -25,6 +25,23 @@
 	    				  left join classtable c on g.ClassID = c.ClassID
 	         WHERE TeacherID=#{userId}]]>
     </select> 
+    
+        <!-- 修改分组信息 --> 
+    <select id="changeGroup" >
+	    <![CDATA[update usertable set GroupID=null WHERE GroupID = #{groupId}
+		update usertable set GroupID=#{groupid} WHERE UserID in(]]>
+		<foreach collection="users" item="userid" separator=",">  
+            #{userid} 
+        </foreach>  
+
+		 <![CDATA[)DELETE usergroup where GroupID = #{groupId}
+		INSERT into usergroup(UserID,GroupID,JoinDate) VALUES ]]>
+		<foreach collection="users" item="userid" separator=",">  
+            (#{userid},#{groupId},NOW())  
+        </foreach>  
+
+    </select> 
+    
     <!-- 根据学生ID查询分组信息 --> 
     <select id="getGroupByStuUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
 	    <![CDATA[select g.GroupID,g.GroupName,g.CreateDate,g.DismissDate,g.TeacherID  FROM grouptable g

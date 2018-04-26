@@ -92,9 +92,12 @@ public class UserController {
 	
 	@RequestMapping("getuserlist.htm")
 	@ResponseBody
-	public Result getUserList(HttpServletRequest request){
+	public Result getUserList(HttpServletRequest request,String groupId){
 		User user = SessionHolder.getUser(request.getSession());
+		if (Integer.parseInt(groupId)  == 0) {
+			return new Result(404,"参数错误");
+		}
 		
-		return this.userService.getStuByUserId(user.getUserID());	
+		return this.userService.getStuByUserId(user.getUserID(),Integer.parseInt(groupId) );	
 	}
 }

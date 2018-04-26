@@ -76,11 +76,11 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public Result getStuByUserId(int userId) {
+	public Result getStuByUserId(int userId,int groupId) {
 		
 		List<User> list;
 		try {
-			list = userMapper.getStuByUserId(userId);
+			list = userMapper.getStuByUserId(userId,groupId);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}

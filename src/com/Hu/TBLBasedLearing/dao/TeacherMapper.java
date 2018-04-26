@@ -11,4 +11,6 @@ public interface TeacherMapper {
 	
 	public List<Group> getGroupByStuUserId(int userId);
 	
+	public List<Group> changeGroup(List<String> users,int groupId);
+	
 }

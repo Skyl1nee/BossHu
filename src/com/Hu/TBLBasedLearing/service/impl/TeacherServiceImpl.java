@@ -27,4 +27,13 @@ public class TeacherServiceImpl implements TeacherService {
 		List<Group> groups = teacherMapper.getGroupByStuUserId(userId);
 		return groups;
 	}
+	@Override
+	public Result changeGroup(List<String> users, int groupId) {
+		try {
+			teacherMapper.changeGroup(users, groupId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
 }

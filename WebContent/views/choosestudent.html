@@ -33,24 +33,45 @@ $(function(){
 	    	   var str = ids.toString();
 	    	   str = str.substring(0,str.length-1);
 	       
-	       // TODO 提交
+	    	$.post("/tbl/teacher/savegroup.htm",{ids:str,groupId:location.search.substring(9)},function(ret){
+	    		if(ret.code==200){top.eModal.alert("分组已保存",'提交成功');	}
+	    		else{top.eModal.alert("保存失败",'错误');	}
+	    	});
+	    	
 	       }, {});
 	});
 	
 	
 })
 function reloadData(){
-	$.post("/tbl/user/getuserlist.htm",function(ret){
-		console.info(ret);
-		$("#users").html("<tr ><td >姓名</td><td>性别</td><td >班级</td><td >学号</td><td >操作</td>	</tr>");
+	$.post("/tbl/user/getuserlist.htm",{groupId:location.search.substring(9)},function(ret){
+		$("#users").html("<tr ><td >姓名</td><td>性别</td><td >班级</td><td >学号</td><td >组名</td><td >操作</td>	</tr>");
 		for(var i=0; i<ret.data.length;i++)
 		{
-			$("#users").append("<tr><td>" +ret.data[i].userName + "</td><td>" 
+			// roleName 临时存放已加入的组名
+			if(ret.data[i].roleName!='')
+			{
+				$("#users").append("<tr><td>" +ret.data[i].userName + "</td><td>" 
 					+ ret.data[i].gender+ "</td><td>"
 					+ ret.data[i].className+"</td><td>" 
 					+ ret.data[i].studentNo+"</td><td>" 
-					+ "<a class='btn btn-md btn-danger' onclick='toggle(&quot;"+ret.data[i].userName+"&quot;,&quot;" +ret.data[i].userID +"&quot;,$(this) )'>选择</a></td>	</tr>")
-					
+					+ ret.data[i].roleName+"</td><td>" 
+					+ "<a class='btn btn-md btn-danger' onclick='toggle(&quot;"+ret.data[i].userName+"&quot;,&quot;" +ret.data[i].userID +"&quot;,$(this) )'>已选择</a></td></tr>");
+				var opt = document.createElement("option");
+		        opt.text = ret.data[i].userName;
+		        opt.value = ret.data[i].userID;
+		        var select = $("#chosenList")[0].options.add(opt);
+			}
+			else{
+				$("#users").append("<tr><td>" +ret.data[i].userName + "</td><td>" 
+					+ ret.data[i].gender+ "</td><td>"
+					+ ret.data[i].className+"</td><td>" 
+					+ ret.data[i].studentNo+"</td><td>" 
+					+ '<font style="color:red">未分组</font>' +"</td><td>" 
+				 	+ "<a class='btn btn-md btn-danger' onclick='toggle(&quot;"+ret.data[i].userName+"&quot;,&quot;" +ret.data[i].userID +"&quot;,$(this) )'>选择</a></td>	</tr>");
+			}
+						
+				
 		}
 	});
 	
@@ -83,15 +104,16 @@ function toggle(name,val,item) {
 </script>
 
 <body>
+<div style="width: 70%;margin: 0 auto;">
+	<select class="select" multiple="multiple" id="chosenList" style="display:none"></select>
+		<a class="btn btn-success pull right" id="submitbtn"> 提交</a>
+	</div>
 	<div style="width: 70%; margin: 0 auto;">
 		<table class="table table-hover" id="users">
 			
 		</table>
 	</div>
-	<div style="width: 70%;margin: 0 auto;">
-	<select class="select" multiple="multiple" id="chosenList" style="display:none"></select>
-		<a class="btn btn-success pull right" id="submitbtn"> 提交</a>
-	</div>
+	
 	 
 </body>
 

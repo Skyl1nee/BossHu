@@ -15,6 +15,6 @@ public interface UserService {
 	
 	public Result UpdateInfo(User user);
 	
-	public Result getStuByUserId(int userId);
+	public Result getStuByUserId(int userId,int groupId);
 	
 }

@@ -1,5 +1,6 @@
 package com.Hu.TBLBasedLearing.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,25 @@ public class TeacherController {
 		
 		return teacherService.getGroupList(user.getUserID());		
 	}
+	
+	@RequestMapping("savegroup.htm")
+	@ResponseBody
+	public Result savegroup(HttpServletRequest request,String ids,String groupId){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		List<String> users =  new ArrayList<String>() ; 
+		for (String id : ids.split(",")) {
+			users.add(id);
+		}
+		
+		if (users.isEmpty()) {
+			return new Result(500);
+		}
+		return teacherService.getGroupList(user.getUserID());		
+	}
+	
 	@RequestMapping("getStugrouplist.htm")
 	@ResponseBody
 	public List<Group> getStuGroupList(HttpServletRequest request){

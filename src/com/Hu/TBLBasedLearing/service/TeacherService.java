@@ -10,4 +10,6 @@ public interface TeacherService {
 	public Result getGroupList(int userId);
 	
 	public List<Group> getGroupListByStuID(int userId);
+	
+	public Result changeGroup(List<String> users,int groupId) ;
 }
