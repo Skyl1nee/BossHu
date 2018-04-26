@@ -17,7 +17,7 @@
 <script>
 	$(function(){
 		$.post("/tbl/teacher/getStugrouplist.htm",function(groups){
-			$("#group").html("<tr ><td style='width:200px'>组编号</td><td>组名</td><td  style='width:200px'>创建时间</td><td >解散时间</td><td>老师id</td> </tr>");
+			$("#group").html("<tr ><td>编号</td><td>组名</td><td  style='width:200px'>创建时间</td><td >解散时间</td><td>老师id</td> </tr>");
 			for(var i=0; i<groups.length;i++)
 			{
 				$("#group").append("<tr><td>" +groups[i].groupID + "</td><td>" 
@@ -27,7 +27,24 @@
 						+ groups[i].teacherID+"</td><td>")
 						
 			}
-		})
+		});
+		
+		$.post("/tbl/task/gettasklist.htm",function(tasks){
+			$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td> </tr>");
+			for(var i=0; i<tasks.length;i++)
+			{
+				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+						+ tasks[i].taskName+ "</td><td>"
+						+ tasks[i].taskDetails+"</td><td>" 
+						+ tasks[i].teacherID +"</td><td>" 
+						+ tasks[i].groupID+"</td><td>"
+						+ tasks[i].status+"</td><td>"
+						+ tasks[i].createDate+"</td><td>"
+						+ tasks[i].endDate+"</td><td>"
+						+ tasks[i].level+"</td><td>")
+						
+			}
+		});
 	});
 </script>
 </head>
@@ -36,7 +53,9 @@
 	<div class="panel panel-default">
 	  	<div class="panel-heading">我的任务</div>
 	  	<div class="panel-body">
-	    	任务信息
+	    	<table class="table table-hover" id="task">
+			
+			</table>
 	  	</div>
 	</div>	
 </div>

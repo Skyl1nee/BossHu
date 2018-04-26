@@ -15,7 +15,6 @@ public class Task {
 	private String FilePath;
 	private String Level;
 	private String TeacherName;
-	private int StudentID;
 	public int getTaskID() {
 		return TaskID;
 	}
