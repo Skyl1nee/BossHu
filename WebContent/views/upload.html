@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>上传文件</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+ <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+<script>
+	$(function(){
+		var taskID = $("#selectTaskID").text();
+		$("#taskID").val(taskID);
+	});
+	function upload(){
+        var form = new FormData(document.getElementById("tf"));
+        $.ajax({
+            url:"/tbl/task/upload.htm",
+            type:"post",
+            data:form,
+            processData:false,
+            contentType:false,
+            success:function(result){
+                if(result.code == 200){
+                	alert("上传成功！");
+                }
+                else{
+                	alert("上传失败！");
+                }
+                location.reload();
+            }            
+        });
+    };
+</script>
+</head>
+<body>
+	<form id="tf" method="post" enctype="multipart/form-data">
+				<input type="file" name="uploadFile"/><br>
+				<input type="text" id="taskID" name="taskID"><br>
+				<input type="submit" value="上传"  onclick="upload();" style="margin-top: 5px;"/>
+	</form>
+</body>
+</html>

@@ -6,4 +6,6 @@ import com.Hu.TBLBasedLearing.entity.Task;
 
 public interface TaskMapper {
 	public List<Task> findMyTask(int stuID);
+	public Task findTaskByID(int taskID);
+	public void changeStatus(Task task);
 }

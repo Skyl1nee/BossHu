@@ -22,5 +22,16 @@
 				INNER JOIN usertable u ON u.UserID = ug.UserID
 				where u.UserID = #{userId}]]>
     </select> 
+     <select id="findTaskByID" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">
+	    <![CDATA[SELECT * from tasktable
+				where tasktable.TaskID = #{TaskID}]]>
+    </select> 
+    
+    <!-- 修改状态 -->
+    <update id="changeStatus">
+    	<![CDATA[ update tasktable set Status = #{Status},FilePath =#{FilePath}
+	         WHERE TaskID=#{TaskID}]]>
+    </update>
+    
 </mapper>
     

@@ -14,10 +14,11 @@
 <link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
 <!-- Bootstrap core CSS -->
 <link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+<script src="/tbl/js/eModal.min.js"></script>
 <script>
 	$(function(){
 		$.post("/tbl/teacher/getStugrouplist.htm",function(groups){
-			$("#group").html("<tr ><td>编号</td><td>组名</td><td  style='width:200px'>创建时间</td><td >解散时间</td><td>老师id</td> </tr>");
+			$("#group").html("<tr ><td>编号</td><td>组名</td><td>创建时间</td><td >解散时间</td><td>老师id</td> </tr>");
 			for(var i=0; i<groups.length;i++)
 			{
 				$("#group").append("<tr><td>" +groups[i].groupID + "</td><td>" 
@@ -30,22 +31,51 @@
 		});
 		
 		$.post("/tbl/task/gettasklist.htm",function(tasks){
-			$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td> </tr>");
+			$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td></td><td style='width:200px'>操作</td> </tr>");
 			for(var i=0; i<tasks.length;i++)
 			{
-				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
-						+ tasks[i].taskName+ "</td><td>"
-						+ tasks[i].taskDetails+"</td><td>" 
-						+ tasks[i].teacherID +"</td><td>" 
-						+ tasks[i].groupID+"</td><td>"
-						+ tasks[i].status+"</td><td>"
-						+ tasks[i].createDate+"</td><td>"
-						+ tasks[i].endDate+"</td><td>"
-						+ tasks[i].level+"</td><td>")
-						
+				if(tasks[i].status == "未提交"){
+					$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+							+ tasks[i].taskName+ "</td><td>"
+							+ tasks[i].taskDetails+"</td><td>" 
+							+ tasks[i].teacherID +"</td><td>" 
+							+ tasks[i].groupID+"</td><td>"
+							+ tasks[i].status+"</td><td>"
+							+ tasks[i].createDate+"</td><td>"
+							+ tasks[i].endDate+"</td><td>"
+							+ tasks[i].level+"</td><td>"
+							+"<a class='btn btn-md btn-danger' onclick='upload(" + tasks[i].taskID + ")'>提交文件</a>")
+				}
+				else{
+					$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+							+ tasks[i].taskName+ "</td><td>"
+							+ tasks[i].taskDetails+"</td><td>" 
+							+ tasks[i].teacherID +"</td><td>" 
+							+ tasks[i].groupID+"</td><td>"
+							+ tasks[i].status+"</td><td>"
+							+ tasks[i].createDate+"</td><td>"
+							+ tasks[i].endDate+"</td><td>"
+							+ tasks[i].level+"</td><td>"
+							+"<a class='btn btn-md btn-danger'>该状态无法提交</a>")
+				}
 			}
 		});
 	});
+	function upload(taskID){
+		$("#selectTaskID").html(taskID);
+		var url = "/tbl/views/upload.html";
+		var option={
+				url: url,
+		        title: "任务" + taskID + "上传",
+		        size: eModal.size.lg,
+		        buttons: [{
+		            text: '关闭',
+		            style: 'danger',
+		            close: true
+		        }]
+		}
+		eModal.ajax(option);
+	};
 </script>
 </head>
 <body>
@@ -69,6 +99,6 @@
 	  	</div>
 	</div>	
 </div>
-
+<div id="selectTaskID" style="display: none;margin-top: 5px"></div>
 </body>
 </html>

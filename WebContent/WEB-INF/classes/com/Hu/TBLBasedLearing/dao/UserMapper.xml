@@ -43,9 +43,12 @@
 	         WHERE UserID=#{UserID}]]>
     </update>
     
-          <!-- 根据老师ID查询分组表 --> 
+          <!-- 根据老师ID查询学生列表 （GroupName as RoleName）--> 
     <select id="getStuByUserId" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
 	    <![CDATA[
-    select u.*,c.ClassName FROM usertable u LEFT JOIN classtable c on u.ClassID = c.ClassID WHERE u.ClassID IN(SELECT ClassID FROM usertable where userid =#{userId}) AND RoleID = '1']]>
+    select u.*,c.ClassName,GroupName as RoleName FROM usertable u 
+    LEFT JOIN classtable c on u.ClassID = c.ClassID 
+    left JOIN grouptable g on g.GroupId = u.GroupId
+    WHERE u.ClassID IN(SELECT ClassID FROM usertable where userid =#{0}) AND RoleID = '1' and (u.GroupId =#{1} or u.GroupId is null)]]>
     </select> 
 </mapper>
