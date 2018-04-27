@@ -2,9 +2,107 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>studentIframe</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+ <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+<script src="/tbl/js/eModal.min.js"></script>
+<script>
+$(function(){
+	reloadData();
+	reloadTaskData();
+})
+function reloadData(){
+	$.post("/tbl/teacher/getgrouplist.htm",function(ret){
+		$("#group").html("<tr ><td style='width:200px'>成立时间</td><td>组名</td><td  style='width:200px'>班级</td><td >组长</td><td>组长学号</td><td style='width:200px'>操作</td>	</tr>");
+		for(var i=0; i<ret.data.length;i++)
+		{
+			$("#group").append("<tr><td>" +ret.data[i].createDate + "</td><td>" 
+					+ ret.data[i].groupName+ "</td><td>"
+					+ ret.data[i].className+"</td><td>" 
+					+ ret.data[i].groupLeader +"</td><td>" 
+					+ ret.data[i].groupLeaderNo+"</td><td>" 
+					+ "<a class='btn btn-md btn-danger' onclick='delGroup("+ret.data[i].groupID +")'>删除</a><a style='margin-left:10px' class='btn btn-md btn-primary ' onclick='editGroup("+ret.data[i].groupID +")'>修改成员</a></td>	</tr>")
+					
+		}
+	});
+}
+
+function reloadTaskData(){
+	$.post("/tbl/teacher/gettasklist.htm",function(tasks){
+		console.info(tasks);
+		$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td></td><td style='width:200px'>操作</td> </tr>");
+		for(var i=0; i<tasks.length;i++)
+		{
+			if(tasks[i].status == "未提交"){
+				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+						+ tasks[i].taskName+ "</td><td>"
+						+ tasks[i].taskDetails+"</td><td>" 
+						+ tasks[i].teacherID +"</td><td>" 
+						+ tasks[i].groupID+"</td><td>"
+						+ tasks[i].status+"</td><td>"
+						+ tasks[i].createDate+"</td><td>"
+						+ tasks[i].endDate+"</td><td>"
+						+ tasks[i].level+"</td><td>"
+						+"<a style='color:red'>请等待学生提交</a>")
+			}
+			else{
+				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+						+ tasks[i].taskName+ "</td><td>"
+						+ tasks[i].taskDetails+"</td><td>" 
+						+ tasks[i].teacherID +"</td><td>" 
+						+ tasks[i].groupID+"</td><td>"
+						+ tasks[i].status+"</td><td>"
+						+ tasks[i].createDate+"</td><td>"
+						+ tasks[i].endDate+"</td><td>"
+						+ tasks[i].level+"</td><td>"
+						+"<a class='btn btn-md btn-danger'>该状态无法提交</a>")
+			}
+		}
+	});
+}
+function editGroup(id){
+	location.href = "/tbl/views/choosestudent.html?groupid="+id
+	
+}
+</script>
 </head>
 <body>
-hello!!!!!
+<div>
+	<div class="panel panel-default">
+	  	<div class="panel-heading">分组信息</div>
+	  	<div class="panel-body">
+	    		
+			<div class="btngroup pull-left" style="padding:5px 5px">
+				<a class="btn btn-md btn-success pull-left" onclick="addGroup()">新增</a>
+				
+				
+			</div>
+				<table class="table table-hover" id="group">
+					
+				</table>
+
+	  	</div>
+	</div>	
+</div>
+<div>
+	<div class="panel panel-default">
+	  	<div class="panel-heading">任务信息</div>
+	  	<div class="panel-body">
+	    	<table class="table table-hover" id="task">
+			
+			</table>
+	  	</div>
+	</div>	
+</div>
+
 </body>
 </html>

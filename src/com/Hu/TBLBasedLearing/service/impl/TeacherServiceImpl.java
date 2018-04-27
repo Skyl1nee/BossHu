@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Hu.TBLBasedLearing.dao.TeacherMapper;
 import com.Hu.TBLBasedLearing.entity.Group;
+import com.Hu.TBLBasedLearing.entity.Task;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.TeacherService;
 
@@ -28,12 +29,31 @@ public class TeacherServiceImpl implements TeacherService {
 		return groups;
 	}
 	@Override
-	public Result changeGroup(List<String> users, int groupId) {
+	public Result changeGroup(List<Integer> users, int groupId) {
 		try {
 			teacherMapper.changeGroup(users, groupId);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}
 		return new Result(200);
+	}
+	@Override
+	public Result clearGroup(int groupId) {
+		try {
+			teacherMapper.clearGroup(groupId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public List<Task> getTaskList(int userId) {
+		List<Task> taskList;
+		try {
+			taskList = teacherMapper.getTaskList(userId);
+		} catch (Exception e) {
+			return null;
+		}
+		return taskList;
 	}
 }

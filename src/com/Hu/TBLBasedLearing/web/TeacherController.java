@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Hu.TBLBasedLearing.entity.Group;
+import com.Hu.TBLBasedLearing.entity.Task;
 import com.Hu.TBLBasedLearing.entity.User;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.TeacherService;
@@ -43,15 +44,21 @@ public class TeacherController {
 		if (!user.getRoleName().equals("教师")) {
 			return new Result(500,"您不是教师，不能进行操作");	
 		}
-		List<String> users =  new ArrayList<String>() ; 
-		for (String id : ids.split(",")) {
-			users.add(id);
+		if (Integer.parseInt(groupId)  == 0) 
+		{
+			return new Result(404,"参数错误");
 		}
 		
-		if (users.isEmpty()) {
-			return new Result(500);
+		if (ids == "") {
+			return teacherService.clearGroup(Integer.parseInt(groupId));
 		}
-		return teacherService.getGroupList(user.getUserID());		
+		List<Integer> users =  new ArrayList<Integer>() ; 
+		for (String id : ids.split(",")) {
+			users.add(Integer.parseInt(id));
+		}
+		
+		
+		return teacherService.changeGroup(users, Integer.parseInt(groupId));		
 	}
 	
 	@RequestMapping("getStugrouplist.htm")
@@ -61,5 +68,11 @@ public class TeacherController {
 		List<Group> groups = this.teacherService.getGroupListByStuID(user.getUserID());
 		return groups;		
 	}
-
+	@RequestMapping("gettasklist.htm")
+	@ResponseBody
+	public List<Task> getTaskList(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		List<Task> task = this.teacherService.getTaskList(user.getUserID());
+		return task;		
+	}
 }
