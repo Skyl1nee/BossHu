@@ -16,7 +16,19 @@
          <result property="GroupLeaderNo" 		column="StudentNo"/>  
          <result property="ClassName" 		column="ClassName"/>  
     </resultMap>
-
+ 	<!-- 定义数据库和实体的映射关系 -->
+    <resultMap id="taskResultMap" type="com.Hu.TBLBasedLearing.entity.Task"> 
+        <id property="TaskID" 			column="TaskID"/> 
+        <result property="TaskDetails" 	column="TaskDetails"/> 
+        <result property="TeacherID" 	column="TeacherID"/> 
+        <result property="GroupID" 		column="GroupID"/> 
+     	<result property="Status" 		column="Status"/> 
+        <result property="CreateDate" 	column="CreateDate"/> 
+        <result property="EndDate" 		column="EndDate"/>          
+        <result property="FilePath" 		column="FilePath"/>    
+        <result property="Level" 		column="Level"/>    
+        <result property="TeacherName" 		column="TeacherName"/>  
+    </resultMap>
     
     <!-- 根据老师ID查询分组表 --> 
     <select id="getGroupByUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
@@ -28,18 +40,31 @@
     
         <!-- 修改分组信息 --> 
     <select id="changeGroup" >
-	    <![CDATA[update usertable set GroupID=null WHERE GroupID = #{groupId}
-		update usertable set GroupID=#{groupid} WHERE UserID in(]]>
-		<foreach collection="users" item="userid" separator=",">  
+	    <![CDATA[update usertable set GroupID=null WHERE GroupID = #{groupId};
+		update usertable set GroupID=#{groupId} WHERE UserID in]]>
+		<foreach collection="users" item="userid" index="index" open="(" separator="," close=");">  
             #{userid} 
-        </foreach>  
-
-		 <![CDATA[)DELETE usergroup where GroupID = #{groupId}
+        </foreach> 
+       
+		 <![CDATA[DELETE from usergroup where GroupID = #{groupId};
 		INSERT into usergroup(UserID,GroupID,JoinDate) VALUES ]]>
 		<foreach collection="users" item="userid" separator=",">  
             (#{userid},#{groupId},NOW())  
         </foreach>  
 
+    </select> 
+    
+    <!-- 清空分组信息 --> 
+    <select id="clearGroup" >
+	    <![CDATA[update usertable set GroupID=null WHERE GroupID = #{groupId};
+		DELETE from usergroup where GroupID = #{groupId}
+	]]>
+    </select> 
+    
+    <!-- 获取所有任务信息 --> 
+    <select id="getTaskList" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="taskResultMap">
+	    <![CDATA[SELECT * from tasktable
+				where tasktable.TeacherID = #{userId}]]>
     </select> 
     
     <!-- 根据学生ID查询分组信息 --> 

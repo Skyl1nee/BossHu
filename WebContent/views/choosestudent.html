@@ -24,8 +24,7 @@ $(function(){
 	reloadData();
 	
 	$("#submitbtn").click(function (){
-		top.eModal.confirm("确定要提交吗", "确认")
-	       .then(function(){
+		
 	    	   var ids = [];
 	    	   $("#chosenList option").each(function () {
 	    	        ids.push($(this).val() + ",");
@@ -33,16 +32,23 @@ $(function(){
 	    	   var str = ids.toString();
 	    	   str = str.substring(0,str.length-1);
 	       
-	    	$.post("/tbl/teacher/savegroup.htm",{ids:str,groupId:location.search.substring(9)},function(ret){
-	    		if(ret.code==200){top.eModal.alert("分组已保存",'提交成功');	}
-	    		else{top.eModal.alert("保存失败",'错误');	}
-	    	});
-	    	
-	       }, {});
+	    	   submitgroup(str);
+	     
 	});
 	
 	
 })
+
+function submitgroup(str){
+	
+	$.post("/tbl/teacher/savegroup.htm",{ids:str,groupId:location.search.substring(9)},function(ret){
+		if(ret.code==200){top.eModal.alert("分组已保存",'提交成功');	}
+		else{top.eModal.alert("保存失败",'错误');	}
+		reloadData()
+	});
+	
+	
+}
 function reloadData(){
 	$.post("/tbl/user/getuserlist.htm",{groupId:location.search.substring(9)},function(ret){
 		$("#users").html("<tr ><td >姓名</td><td>性别</td><td >班级</td><td >学号</td><td >组名</td><td >操作</td>	</tr>");
@@ -106,7 +112,8 @@ function toggle(name,val,item) {
 <body>
 <div style="width: 70%;margin: 0 auto;">
 	<select class="select" multiple="multiple" id="chosenList" style="display:none"></select>
-		<a class="btn btn-success pull right" id="submitbtn"> 提交</a>
+		<a class="btn btn-primary pull-left" style="margin:10px 5px" onclick="javascript:history.back();void(0)"> &lt;返回</a>
+		<a class="btn btn-success " style="margin:10px 5px" id="submitbtn"> 提交</a>
 	</div>
 	<div style="width: 70%; margin: 0 auto;">
 		<table class="table table-hover" id="users">
