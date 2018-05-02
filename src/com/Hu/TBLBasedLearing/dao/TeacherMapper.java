@@ -19,5 +19,7 @@ public interface TeacherMapper {
 	public void clearGroup(int groupId);
 
 	public List<Task> getTaskList(int userId);
+
+	public void tryDeleteGroup(int groupId);
 	
 }

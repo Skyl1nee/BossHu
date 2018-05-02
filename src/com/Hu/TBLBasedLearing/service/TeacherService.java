@@ -17,5 +17,7 @@ public interface TeacherService {
 	public Result clearGroup(int groupId);
 	
 	public List<Task> getTaskList(int userId);
+
+	public Result tryDeleteGroup(int groupId);
 	
 }

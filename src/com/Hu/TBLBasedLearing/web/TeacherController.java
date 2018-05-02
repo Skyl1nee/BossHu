@@ -61,6 +61,22 @@ public class TeacherController {
 		return teacherService.changeGroup(users, Integer.parseInt(groupId));		
 	}
 	
+	@RequestMapping("delgroup.htm")
+	@ResponseBody
+	public Result delGroup(HttpServletRequest request,String groupId,String forceDelete){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(groupId)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		
+		teacherService.clearGroup(Integer.parseInt(groupId));
+		return teacherService.tryDeleteGroup(Integer.parseInt(groupId));
+	}
+	
 	@RequestMapping("getStugrouplist.htm")
 	@ResponseBody
 	public List<Group> getStuGroupList(HttpServletRequest request){

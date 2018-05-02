@@ -61,6 +61,12 @@
 	]]>
     </select> 
     
+        <!-- 删除空白分组 --> 
+    <select id="tryDeleteGroup" >
+	    <![CDATA[DELETE from grouptable where GroupID = #{groupId}
+	]]>
+    </select> 
+    
     <!-- 获取所有任务信息 --> 
     <select id="getTaskList" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="taskResultMap">
 	    <![CDATA[SELECT * from tasktable

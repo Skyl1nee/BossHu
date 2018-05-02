@@ -56,4 +56,13 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 		return taskList;
 	}
+	@Override
+	public Result tryDeleteGroup(int groupId) {
+		try {
+			teacherMapper.tryDeleteGroup(groupId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
 }

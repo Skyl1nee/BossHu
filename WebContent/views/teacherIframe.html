@@ -73,6 +73,20 @@ function editGroup(id){
 	location.href = "/tbl/views/choosestudent.html?groupid="+id
 	
 }
+
+function delGroup(id){
+	eModal.confirm("确定要删除吗", "删除")
+    .then(function(){
+    	$.post("/tbl/teacher/delgroup.htm",{groupId:id},function(ret){
+    		reloadData();
+    	});
+    //点击取消时：
+    }, function(){return;}); 
+	
+}
+function addGroup(id){
+
+}
 </script>
 </head>
 <body>
