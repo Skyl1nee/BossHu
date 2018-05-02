@@ -18,4 +18,9 @@ public interface UserMapper {
 	
 	public List<User> getStuByUserId(int userId,int groupId);
 	
+	public void adminUpdateInfo(User user);
+	
+	public void delluser(User user);
+	
+	public List<User> findUsers();
 }

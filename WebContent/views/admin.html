@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+	<title>管理员首页</title>
+	<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+	<!-- 引入已经压缩的css文件 -->
+	<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+	<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+	<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+	<!-- 引入已经压缩的js文件 -->
+	 <script src="/tbl/js/bootstrap.min.js"></script>
+	 <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+	<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+	<!-- Bootstrap core CSS -->
+	<link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/tbl/js/eModal.min.js"></script>
+	<script>
+		$(function(){			
+			$.post("/tbl/admin/findusers.htm",function(users){				
+				$("#user").html("<tr ><td>用户名</td><td>密码</td><td>性别</td><td >角色</td><td>分组</td><td>班级</td><td>学号</td><td>操作</td> </tr>");
+				for(var i=0; i<users.length;i++)
+				{
+					$("#user").append("<tr><td>" +users[i].userName + "</td><td>" 
+							+ users[i].password+ "</td><td>"
+							+ users[i].gender+"</td><td>" 
+							+ users[i].roleID+"</td><td>" 
+							+ users[i].groupID+"</td><td>"
+							+ users[i].classID+"</td><td>"
+							+ users[i].studentNo+"</td><td>"
+							+"<a class='btn btn-md btn-info' style='margin-right:5px' onclick='updateuser(" + users[i].userID + ")'>修改</a>"
+							+"<a class='btn btn-md btn-info' onclick='delluser(" + users[i].userID + ")'>删除</a>"
+							);
+				}
+			});
+			
+			$.post("/tbl/class/findall.htm",function(classes){	
+				if(classes != null){
+					$("#classinfo").html("<tr ><td>编号</td><td>班级名称</td><td>年级</td><td >备注</td><td>操作</td> </tr>");
+					for(var i = 0;i < classes.length;i++){
+						$("#classinfo").append("<tr><td>" +classes[i].classID + "</td><td>" 
+								+ classes[i].className+ "</td><td>"
+								+ classes[i].level+"</td><td>" 
+								+ classes[i].remark +"</td><td>"
+								+"<a class='btn btn-info' style='margin-right:5px' onclick='updateclass(" + classes[i].className + ")'>修改</a>"
+								+"<a class='btn btn-info' onclick='dellclass(" + classes[i].className + ")'>删除</a>"
+								);
+					}	
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div>
+			<h4>闪瞎眼的管理员你好！</h4>
+		</div>
+		<div class="panel panel-default">
+		  	<div class="panel-heading">管理用户</div>
+		  	<div class="panel-body">
+		    	<table class="table table-hover table-bordered" id="user" >
+				
+				</table>
+		  	</div>
+		</div>	
+		<div class="panel panel-default">
+		  	<div class="panel-heading">管理班级
+		  		<a class='btn btn-md btn-info' style='margin-left:35px'>新增班级</a>
+		  	</div>
+		  	<div class="panel-body">
+		    	<table class="table table-hover table-bordered" id="classinfo">
+				
+				</table>
+		  	</div>
+		</div>	
+	</div>
+</body>
+</html>

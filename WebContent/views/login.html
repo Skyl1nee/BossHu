@@ -64,7 +64,10 @@
 			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
 				if(result.code == 200){
-					window.location.href ="/tbl/views/index.html"
+					if(result.user.roleID == 3){
+					window.location.href ="/tbl/views/admin.html";
+					}
+					window.location.href ="/tbl/views/index.html";					
 				}
 				else{
 					alert("用户名或密码错误");

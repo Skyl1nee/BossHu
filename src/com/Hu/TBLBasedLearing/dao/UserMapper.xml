@@ -51,4 +51,17 @@
     left JOIN grouptable g on g.GroupId = u.GroupId
     WHERE u.ClassID IN(SELECT ClassID FROM usertable where userid =#{0}) AND RoleID = '1' and (u.GroupId =#{1} or u.GroupId is null)]]>
     </select> 
+    
+    <select id="findUsers" resultType="com.Hu.TBLBasedLearing.entity.User" resultMap="resultMap">
+	    <![CDATA[SELECT * from usertable]]>
+    </select> 
+    
+     <update id="adminUpdateInfo">
+    	<![CDATA[ update usertable set Password = #{Password},RoleID = #{RoleID},Gender = #{Gender},ClassID = #{ClassID},StudentNo= #{StudentNo}
+	         WHERE UserID=#{UserID}]]>
+    </update>
+     <delete id="delluser">
+    	<![CDATA[ DELETE FROM usertable 
+	         WHERE UserID=#{UserID}]]>
+    </delete>
 </mapper>

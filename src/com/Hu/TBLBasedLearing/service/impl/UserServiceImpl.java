@@ -88,4 +88,38 @@ public class UserServiceImpl implements UserService {
 		return new Result(200,list);
 	}
 
+
+	@Override
+	public Result adminUpdateInfo(User user) {
+		if(user != null){
+			try{
+				this.userMapper.adminUpdateInfo(user);;
+			}catch(Exception e) {
+				return new Result(500,"修改失败"); 
+			}
+		}
+		return new Result(200,"修改成功");
+	}
+
+
+	@Override
+	public Result delluser(User user) {
+		if(user != null){
+			try{
+				this.userMapper.delluser(user);
+			}catch(Exception e) {
+				return new Result(500,"删除失败"); 
+			}
+		}
+		return new Result(200,"删除成功");
+	}
+
+
+	@Override
+	public List<User> findUsers() {
+		List<User> users;
+		users = this.userMapper.findUsers();		
+		return users;
+	}
+
 }
