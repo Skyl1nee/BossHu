@@ -17,9 +17,7 @@
     </resultMap>
     <!-- 根据学生ID查询任务信息 --> 
     <select id="findMyTask" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">
-	    <![CDATA[SELECT t.TaskID,t.TaskName,t.TaskDetails,t.TeacherID,t.GroupID,t.`Status`,t.CreateDate,t.EndDate,t.FilePath,t.`Level` from tasktable t INNER JOIN grouptable g ON t.GroupID = g.GroupID
-				INNER JOIN usergroup ug ON g.GroupID = ug.GroupID
-				INNER JOIN usertable u ON u.UserID = ug.UserID
+	    <![CDATA[SELECT t.TaskID,t.TaskName,t.TaskDetails,t.TeacherID,t.GroupID,t.`Status`,t.CreateDate,t.EndDate,t.FilePath,t.`Level` from tasktable t INNER JOIN usertable u ON t.GroupID = u.GroupID
 				where u.UserID = #{userId}]]>
     </select> 
      <select id="findTaskByID" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">

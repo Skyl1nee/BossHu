@@ -64,9 +64,9 @@
 			}
 			$.post("user/login.htm", {username:username, password:password}, function(result){
 				if(result.code == 200){
-					if(result.user.roleID == 3){
+					/* if(result.user.roleID == 3){
 					window.location.href ="/tbl/views/admin.html";
-					}
+					} */
 					window.location.href ="/tbl/views/index.html";					
 				}
 				else{
