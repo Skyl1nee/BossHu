@@ -57,7 +57,7 @@
     </select> 
     
      <update id="adminUpdateInfo">
-    	<![CDATA[ update usertable set Password = #{Password},RoleID = #{RoleID},Gender = #{Gender},ClassID = #{ClassID},StudentNo= #{StudentNo}
+    	<![CDATA[ update usertable set UserName=#{UserName}, Password = #{Password},RoleID = #{RoleID},Gender = #{Gender},ClassID = #{ClassID},StudentNo= #{StudentNo}
 	         WHERE UserID=#{UserID}]]>
     </update>
      <delete id="delluser">

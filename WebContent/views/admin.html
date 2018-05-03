@@ -42,13 +42,111 @@
 								+ classes[i].className+ "</td><td>"
 								+ classes[i].level+"</td><td>" 
 								+ classes[i].remark +"</td><td>"
-								+"<a class='btn btn-info' style='margin-right:5px' onclick='updateclass(" + classes[i].className + ")'>修改</a>"
-								+"<a class='btn btn-info' onclick='dellclass(" + classes[i].className + ")'>删除</a>"
+								+"<a class='btn btn-info' style='margin-right:5px' onclick='updateclass(" + classes[i].classID + ")'>修改</a>"
+								+"<a class='btn btn-info' onclick='dellclass(" + classes[i].classID + ")'>删除</a>"
 								);
 					}	
 				}
 			});
+			
+			$("#chinf-btn").click(function(){
+				var userID = Number($("#usrinfo-id").text());
+				var username = $("#username").val();
+				var password = $("#password").val();			
+				var rolename = $("#role option:selected").val();
+				var roleID;
+				var gender = $("#chinf-gender option:selected").val();
+				var classID = $("#chinf-class option:selected").val();
+				var stuNo = $("#chinf-class option:selected").val();
+				switch(rolename){
+					case "student":
+						roleID = 1;break;
+					case "teacher":
+						roleID = 2;break;
+					case "instructor":
+						roleID = 3;break;
+				}
+				$.post("/tbl/admin/userManager.htm",{userID:userID,username:username,password:password,roleID:roleID,gender:gender,classID:classID,stuNo:stuNo},function(result){
+					if(result.code == 200){
+						$("#chInfo-modal").modal('hide');
+						alert("修改成功，请刷新。");
+					}else{
+						alert("发生了错误，好好想想你过去的所作所为。");
+					}
+				});			
+			});
+			
+			$("#add-btn").click(function(){
+				$("#addclass-modal").modal('show');
+			});
+			
+			$("#addclass-btn").click(function(){
+				var className = $("#className").val();
+				var classLevel = $("#classLevel").val();
+				var classRemark = $("#classRemark").val();
+				$.post("/tbl/admin/classadd.htm",{className:className,classLevel:classLevel,classRemark:classRemark},function(result){
+					if(result.code == 200){	
+						$("#addclass-modal").modal('hide');
+						alert("添加成功,请刷新");
+					}
+					else{
+						alert("添加失败，请联系站长");
+					}
+				});				
+			});
+			$("#updateclass-btn").click(function(){
+				var classID = Number($("#classinfo-id").text());
+				var className = $("#upclassName").val();
+				var classLevel = $("#upclassLevel").val();
+				var classRemark = $("#upclassRemark").val();
+				$.post("/tbl/admin/classupdate.htm",{classID,className,classLevel,classRemark},function(result){
+					if(result.code == 200){	
+						$("#updateclass-modal").modal('hide');
+						alert("修改成功,请刷新");
+					}
+					else{
+						alert("修改失败，请联系站长");
+					}
+				});		
+			});
+			
 		});
+		function delluser(userID){
+			$.post("/tbl/admin/userdell.htm",{userID,userID},function(result){
+				if(result.code == 200){					
+					alert("删除成功,请刷新");
+				}
+				else{
+					alert("删除失败，请联系站长");
+				}
+			})
+		};
+		function updateuser(userID){
+			$("#chInfo-modal").modal('show');
+			$("#usrinfo-id").text(userID);
+			$.post("/tbl/class/findall.htm",function(classes){	
+				if(classes != null){
+					for(var i = 0;i < classes.length;i++){
+						$("#chinf-class").append("<option value ='" + classes[i].classID + "'>" + classes[i].className + "</option>" );
+					}	
+				}
+			});	
+			
+		};		
+		function dellclass(classID){
+			$.post("/tbl/admin/classdell.htm",{classID:classID},function(result){
+				if(result.code == 200){					
+					alert("删除成功,请刷新");
+				}
+				else{
+					alert("删除失败，请联系站长");
+				}
+			})
+		};
+		function updateclass(classID){
+			$("#updateclass-modal").modal('show');
+			$("#classinfo-id").text(classID);			
+		}
 	</script>
 </head>
 <body>
@@ -66,7 +164,7 @@
 		</div>	
 		<div class="panel panel-default">
 		  	<div class="panel-heading">管理班级
-		  		<a class='btn btn-md btn-info' style='margin-left:35px'>新增班级</a>
+		  		<a class='btn btn-md btn-info' id="add-btn" style='margin-left:35px'>新增班级</a>
 		  	</div>
 		  	<div class="panel-body">
 		    	<table class="table table-hover table-bordered" id="classinfo">
@@ -74,6 +172,149 @@
 				</table>
 		  	</div>
 		</div>	
+	</div>
+	<div class="modal fade" id="chInfo-modal">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="chuseinfoform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">修改用户信息</h4>
+	      </div>
+	      
+	      <div class="modal-body" id="chinfo-classdiv">
+	       <div class="form-group">
+	  			<label for="usrinfo-id" class= "col-sm-2 control-label">用户id：</label>	  			
+	  			<p id="usrinfo-id" class="col-sm-10" style="margin-top: 6px;"></p>	  			
+	  		</div>
+	      	<div class="form-group">
+	  			<label for="username" class= "col-sm-2 control-label">用户名：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="username" id="username" data-bv-notempty-message="The username is required and cannot be empty"/>
+	  			</div>
+	  		</div>
+	  		<div class="form-group">
+	  			<label for="password" class= "col-sm-2 control-label">密码：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="password" id="password"/>
+	  			</div>
+	  		</div>
+       		<div class="form-group">
+		  		<label for="class" class= "col-sm-2 control-label">班级：</label>
+		  		<div class="col-sm-9">
+			  		<select class="form-control" name="chinf-class" id="chinf-class">				  
+					</select>
+				</div>
+	  		</div>	
+	  		<div class="form-group" style="margin-top: 5px;">
+		  		<label for="gender" class= "col-sm-2 control-label">性别：</label>
+		  		<div class="col-sm-9">
+			  		<select class="form-control" name="gender" id="chinf-gender">
+					  <option value ="1">萌妹</option>
+					  <option value ="2">嘤嘤嘤</option>
+					  <option value="3">女装萌妹</option>	
+					</select>
+				</div>
+	  		</div> 
+	  		<div class="form-group">
+		  		<label for="role" class= "col-sm-2 control-label">身份：</label>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="role" id="role" onchange="checkrole()">					  
+					  <option value ="teacher">老师</option>
+					  <option value ="student">学生</option>
+					  <!-- <option value="instructor">管理员</option>	 -->
+					</select>
+				</div>
+	  		</div> 		
+	  		<div class="form-group" id="chinfo-stuNodiv" style="margin-top: 5px">
+		  		<label for="gender" class= "col-sm-2 control-label">学号：</label>
+		  		<div class="col-sm-9">
+	  				<input class="form-control" type="text" name="chinf-stuNo" id="chinf-stuNo"/>
+	  			</div>
+	  		</div>
+	      </div>	     
+	  		<div class="form-group" id="regclass" style="display: none;">
+		  		<label for="class" class= "col-sm-2 control-label">我所属班级是：</label>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="class" id="class">				  
+					</select>
+				</div>
+	  		</div>
+	      <div class="modal-footer">  
+	      	<button type="button" class="btn btn-primary" id="chinf-btn">修改</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+
+<div class="modal fade bs-example-modal-sm" id="addclass-modal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="changepwdform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">增加班级信息</h4>
+	      </div>
+	      <div class="modal-body">	      
+	       <div class="input-group">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="className" class="form-control" placeholder="班级名">
+			</div>
+	        <div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="classLevel" class="form-control" placeholder="年级">
+			</div>
+			<div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="classRemark" class="form-control" placeholder="备注">
+			</div>			
+	      </div>
+	      <div class="modal-footer">
+	        
+	        <button type="button" class="btn btn-primary" id="addclass-btn">增加</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade bs-example-modal-sm" id="updateclass-modal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+      	<form  class="form-horizontal" role="form" id="changepwdform">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">修改班级信息</h4>
+	      </div>
+	      <div class="modal-body">
+	      <div class="form-group" style="display: none;">
+	  			<label for="usrinfo-id" class= "col-sm-2 control-label">id：</label>	  			
+	  			<p id="classinfo-id" class="col-sm-4" style="margin-top: 6px;"></p>	  			
+	  		</div>
+	       <div class="input-group">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="upclassName" class="form-control" placeholder="班级名">
+			</div>
+	        <div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="upclassLevel" class="form-control" placeholder="年级">
+			</div>
+			<div class="input-group" style="margin-top: 5px;">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			  <input type="text" id="upclassRemark" class="form-control" placeholder="备注">
+			</div>			
+	      </div>
+	      <div class="modal-footer">
+	        
+	        <button type="button" class="btn btn-primary" id="updateclass-btn">修改</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
 	</div>
 </body>
 </html>

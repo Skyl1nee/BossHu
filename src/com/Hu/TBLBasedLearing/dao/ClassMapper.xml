@@ -14,4 +14,20 @@
     	 <![CDATA[select * from classtable
     	 	]]>
     </select>
+    <insert id="addclass" parameterType="com.Hu.TBLBasedLearing.entity.ClassInfo">
+    	<![CDATA[
+            insert into classtable
+            	(ClassName,Level,Remark)
+            values
+            	(#{ClassName},#{Level},#{Remark})
+        ]]>
+    </insert>
+    <delete id="dellclass">
+    	<![CDATA[ DELETE FROM classtable 
+	         WHERE ClassID=#{ClassID}]]>
+    </delete>
+     <update id="updateclass">
+    	<![CDATA[ update classtable set ClassName=#{ClassName}, Level = #{Level},Remark = #{Remark}
+	         WHERE ClassID=#{ClassID}]]>
+    </update>
 </mapper>

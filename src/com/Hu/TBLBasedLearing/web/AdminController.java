@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.Hu.TBLBasedLearing.entity.ClassInfo;
 import com.Hu.TBLBasedLearing.entity.User;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.ClassService;
@@ -32,8 +33,9 @@ public class AdminController {
 	
 	@RequestMapping("userManager.htm")
 	@ResponseBody	
-	public Result userManager(String username,String password,int roleID,String gender,int classID,String stuNo,HttpServletRequest request){
+	public Result userManager(int userID,String username,String password,int roleID,String gender,int classID,String stuNo,HttpServletRequest request){
 		User user = new User();
+		user.setUserID(userID);
 		user.setUserName(username);
 		user.setPassword(password);
 		switch(gender){
@@ -50,31 +52,40 @@ public class AdminController {
 		return this.userService.adminUpdateInfo(user);
 		
 	}
-	@RequestMapping("classManager.htm")
+	@RequestMapping("classupdate.htm")
 	@ResponseBody
-	public Result classManager(){
-		return null;
+	public Result classManager(int classID,String className,String classLevel,String classRemark,HttpServletRequest request){
+		ClassInfo ci = new ClassInfo();
+		ci.setClassID(classID);
+		ci.setClassName(className);
+		ci.setLevel(classLevel);
+		ci.setRemark(classRemark);
+		return this.classService.upodateClass(ci);
 		
 	}
 	
 	@RequestMapping("userdell.htm")
 	@ResponseBody
-	public Result dellUser(){
+	public Result dellUser(int userID){
 		User user = new User();
+		user.setUserID(userID);
 		return this.userService.delluser(user);
 		
 	}
 	
 	@RequestMapping("classdell.htm")
 	@ResponseBody
-	public Result classDell(){
-		return null;
+	public Result classDell(int classID){		
+		return this.classService.dellClass(classID);
 		
 	}
 	@RequestMapping("classadd.htm")
 	@ResponseBody
-	public Result classaddz(){
-		return null;
-		
+	public Result classadd(String className,String classLevel,String classRemark,HttpServletRequest request){
+		ClassInfo ci = new ClassInfo();
+		ci.setClassName(className);
+		ci.setLevel(classLevel);
+		ci.setRemark(classRemark);
+		return this.classService.addClass(ci);		
 	}
 }

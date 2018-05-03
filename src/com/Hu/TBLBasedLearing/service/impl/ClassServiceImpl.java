@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Hu.TBLBasedLearing.dao.ClassMapper;
 import com.Hu.TBLBasedLearing.entity.ClassInfo;
+import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.ClassService;
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -19,5 +20,36 @@ public class ClassServiceImpl implements ClassService {
 		// TODO Auto-generated method stub
 		return this.classMapper.findall();
 	}
+	@Override
+	public Result addClass(ClassInfo ci) {
+		try{
+			this.classMapper.addclass(ci);
+		}
+		catch(Exception e){
+			return new Result(500,"添加失败");
+		}
+		return new Result(200,"添加成功");
+	}
+	@Override
+	public Result dellClass(int ClassID) {
+		try{
+			this.classMapper.dellclass(ClassID);;
+		}
+		catch(Exception e){
+			return new Result(500,"删除失败");
+		}
+		return new Result(200,"删除成功");
+	}
+	@Override
+	public Result upodateClass(ClassInfo ci) {
+		try{
+			this.classMapper.updateclass(ci);;
+		}
+		catch(Exception e){
+			return new Result(500,"修改失败");
+		}
+		return new Result(200,"修改成功");
+	}
+	
 
 }
