@@ -79,6 +79,15 @@
 				WHERE
 				u.UserID = #{userId}]]>
     </select> 
- 
+     <!-- 新增分组 --> 
+    <select id="addGroup" >
+	    <![CDATA[INSERT into grouptable(GroupName,ClassID,CreateDate,TeacherID) VALUES(#{groupName},#{classId},now(),#{userId}) 
+	]]>
+    </select> 
+        <!-- 新增任务 --> 
+    <select id="addTask" >
+	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate,EndDate,) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now(),#{enddate}) 
+	]]>
+    </select>
    
 </mapper>
