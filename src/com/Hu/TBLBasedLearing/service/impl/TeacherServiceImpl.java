@@ -76,9 +76,18 @@ public class TeacherServiceImpl implements TeacherService {
 		return new Result(200);
 	}
 	@Override
-	public Result addTask(String taskName, String taskDetails, int group, Date enddate,int userId) {
+	public Result addTask(String taskName, String taskDetails, int group, int userId) {
 		try {
-			teacherMapper.addTask(taskName,taskDetails,group,enddate,userId);
+			teacherMapper.addTask(taskName,taskDetails,group,userId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public Result DeleteTask(int taskId) {
+		try {
+			teacherMapper.DeleteTask(taskId);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}

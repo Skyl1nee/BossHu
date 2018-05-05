@@ -25,6 +25,8 @@ public interface TeacherMapper {
 
 	public void addGroup(@Param("classId")int classId, @Param("groupName")String groupName,@Param("userId")int userId);
 
-	public void addTask(@Param("taskName")String taskName, @Param("taskDetails")String taskDetails,@Param("group") int group,@Param("enddate") Date enddate,@Param("userId")int userId);
+	public void addTask(@Param("taskName")String taskName, @Param("taskDetails")String taskDetails,@Param("group") int group,@Param("userId")int userId);
+
+	public void DeleteTask(@Param("taskId")int taskId);
 	
 }

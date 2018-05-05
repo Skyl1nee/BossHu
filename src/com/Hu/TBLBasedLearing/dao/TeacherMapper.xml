@@ -67,6 +67,12 @@
 	]]>
     </select> 
     
+        <!-- 删除任务 --> 
+    <select id="DeleteTask" >
+	    <![CDATA[DELETE from tasktable where TaskId = #{taskId}
+	]]>
+    </select> 
+    
     <!-- 获取所有任务信息 --> 
     <select id="getTaskList" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="taskResultMap">
 	    <![CDATA[SELECT * from tasktable
@@ -86,7 +92,7 @@
     </select> 
         <!-- 新增任务 --> 
     <select id="addTask" >
-	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate,EndDate,) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now(),#{enddate}) 
+	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now()) 
 	]]>
     </select>
    

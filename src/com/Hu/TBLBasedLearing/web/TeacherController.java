@@ -1,13 +1,13 @@
 package com.Hu.TBLBasedLearing.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Hu.TBLBasedLearing.entity.Group;
@@ -26,6 +26,21 @@ public class TeacherController {
 	private UserService userService;
 	@Autowired
 	private TeacherService teacherService;
+	
+
+	@RequestMapping("createtask.htm")
+	@ResponseBody
+	public Result newtask(HttpServletRequest request,@RequestParam("taskName") String taskName,@RequestParam("taskDetails") String taskDetails,@RequestParam("group") String group){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(group)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),user.getUserID());
+	}
 	
 	@RequestMapping("getgrouplist.htm")
 	@ResponseBody
@@ -78,6 +93,21 @@ public class TeacherController {
 		return teacherService.tryDeleteGroup(Integer.parseInt(groupId));
 	}
 	
+	@RequestMapping("deltask.htm")
+	@ResponseBody
+	public Result delTask(HttpServletRequest request,String taskId){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(taskId)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		
+		return teacherService.DeleteTask(Integer.parseInt(taskId));
+	}
+	
 	@RequestMapping("newgroup.htm")
 	@ResponseBody
 	public Result newgroup(HttpServletRequest request,String classId,String groupName){
@@ -92,19 +122,7 @@ public class TeacherController {
 		return teacherService.addGroup(Integer.parseInt(classId),groupName,user.getUserID());
 	}
 	
-	@RequestMapping("newtask.htm")
-	@ResponseBody
-	public Result newtask(HttpServletRequest request,String taskName,String taskDetails,String group,Date enddate){
-		User user = SessionHolder.getUser(request.getSession());
-		if (!user.getRoleName().equals("教师")) {
-			return new Result(500,"您不是教师，不能进行操作");	
-		}
-		if (Integer.parseInt(group)  == 0) 
-		{
-			return new Result(404,"参数错误");
-		}
-		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),enddate,user.getUserID());
-	}
+
 	
 	@RequestMapping("getStugrouplist.htm")
 	@ResponseBody

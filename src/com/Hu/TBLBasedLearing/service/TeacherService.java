@@ -23,6 +23,8 @@ public interface TeacherService {
 
 	public Result addGroup(int parseInt, String groupName,int userId);
 
-	public Result addTask(String taskName, String taskDetails, int parseInt, Date enddate,int userId);
+	public Result addTask(String taskName, String taskDetails, int parseInt, int userId);
+
+	public Result DeleteTask(int taskId);
 	
 }

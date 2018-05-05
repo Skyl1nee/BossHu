@@ -38,7 +38,6 @@ function reloadData(){
 
 function reloadTaskData(){
 	$.post("/tbl/teacher/gettasklist.htm",function(tasks){
-		console.info(tasks);
 		$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td></td><td style='width:200px'>操作</td> </tr>");
 		for(var i=0; i<tasks.length;i++)
 		{
@@ -52,9 +51,10 @@ function reloadTaskData(){
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
 						+ tasks[i].level+"</td><td>"
-						+"<a style='color:red'>请等待学生提交</a>")
+						+"<a style='color:red'>请等待学生提交</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 			else{
+				console.info(tasks[i].filePath.replace(/\\/g,"/"));
 				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
 						+ tasks[i].taskName+ "</td><td>"
 						+ tasks[i].taskDetails+"</td><td>" 
@@ -64,7 +64,7 @@ function reloadTaskData(){
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
 						+ tasks[i].level+"</td><td>"
-						+"<a class='btn btn-md btn-danger'>该状态无法提交</a>")
+						+"<a class='btn btn-md btn-danger' href='javascript:window.open(&quot;/tbl/" +tasks[i].filePath + "&quot;)'>下载</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 		}
 	});
@@ -84,6 +84,18 @@ function delGroup(id){
     }, function(){return;}); 
 	
 }
+
+function delTask(id){
+	eModal.confirm("确定要删除吗", "删除")
+    .then(function(){
+    	$.post("/tbl/teacher/deltask.htm",{taskId:id},function(ret){
+    		reloadTaskData();
+    	});
+    //点击取消时：
+    }, function(){return;}); 
+	
+}
+
 function addGroup(){
 	var options = {
 	        title: '新增',
@@ -130,11 +142,11 @@ function addTask(){
 		            	var taskName = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskName").val();
 		            	var taskDetails = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskDetails").val();
 		            	var group = top.$(".embed-responsive-item")[0].contentWindow.$("#group").val();
-		            	var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val();
-		            	
-		            	$.post("/tbl/teacher/newtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group,enddate:enddate},function(ret){
-		            		reloadData();
-		            	});
+		            	/* var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val().toString(); */
+		            
+		            	$.post("/tbl/teacher/createtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group},function(ret){
+		            		reloadTaskData();
+		            	}); 
 		            }
 		       }
         	]

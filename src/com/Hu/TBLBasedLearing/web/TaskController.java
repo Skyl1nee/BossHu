@@ -37,7 +37,7 @@ public class TaskController {
 		Task task = new Task();
 		task = this.taskService.findTaskByID((Integer.parseInt(taskID)));
 		// 设置保存路径
-		String savePath = request.getServletContext().getRealPath("upload//" +task.getTaskName());
+		String savePath = "upload//" +task.getTaskName();
 		// 获取文件名称
 		String fileName = uploadFile.getOriginalFilename();
 
@@ -50,7 +50,7 @@ public class TaskController {
 		try {
 			uploadFile.transferTo(targetFile);
 			task.setStatus("已提交");
-			task.setFilePath(savePath);
+			task.setFilePath(savePath + "//" + fileName);
 			return this.taskService.setStatus(task);
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
