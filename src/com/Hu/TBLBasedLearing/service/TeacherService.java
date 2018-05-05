@@ -1,5 +1,6 @@
 package com.Hu.TBLBasedLearing.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.Hu.TBLBasedLearing.entity.Group;
@@ -19,5 +20,9 @@ public interface TeacherService {
 	public List<Task> getTaskList(int userId);
 
 	public Result tryDeleteGroup(int groupId);
+
+	public Result addGroup(int parseInt, String groupName,int userId);
+
+	public Result addTask(String taskName, String taskDetails, int parseInt, Date enddate,int userId);
 	
 }

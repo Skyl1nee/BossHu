@@ -1,5 +1,6 @@
 package com.Hu.TBLBasedLearing.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,24 @@ public class TeacherServiceImpl implements TeacherService {
 	public Result tryDeleteGroup(int groupId) {
 		try {
 			teacherMapper.tryDeleteGroup(groupId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public Result addGroup(int classId, String groupName,int userId) {
+		try {
+			teacherMapper.addGroup(classId,groupName,userId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public Result addTask(String taskName, String taskDetails, int group, Date enddate,int userId) {
+		try {
+			teacherMapper.addTask(taskName,taskDetails,group,enddate,userId);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}

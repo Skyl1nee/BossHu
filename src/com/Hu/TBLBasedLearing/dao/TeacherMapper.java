@@ -1,5 +1,6 @@
 package com.Hu.TBLBasedLearing.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -21,5 +22,9 @@ public interface TeacherMapper {
 	public List<Task> getTaskList(int userId);
 
 	public void tryDeleteGroup(int groupId);
+
+	public void addGroup(@Param("classId")int classId, @Param("groupName")String groupName,@Param("userId")int userId);
+
+	public void addTask(@Param("taskName")String taskName, @Param("taskDetails")String taskDetails,@Param("group") int group,@Param("enddate") Date enddate,@Param("userId")int userId);
 	
 }

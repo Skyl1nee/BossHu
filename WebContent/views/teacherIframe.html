@@ -84,22 +84,73 @@ function delGroup(id){
     }, function(){return;}); 
 	
 }
-function addGroup(id){
+function addGroup(){
+	var options = {
+	        title: '新增',
+	        size: 'md',
+	        url:"/tbl/views/newgroup.html",
+        	buttons: [{
+		            text: '关闭',
+		            style: 'danger',
+		            close: true
+		       },
+		       {
+		            text: '提交',
+		            style: 'primary',
+		            close: true,
+		            click: function(){
+		            	var groupName = top.$(".embed-responsive-item")[0].contentWindow.$("#groupname").val();
+		            	var classId = top.$(".embed-responsive-item")[0].contentWindow.$("#class").val();
+		            	
+		            	$.post("/tbl/teacher/newgroup.htm",{groupName:groupName,classId:classId},function(ret){
+		            		reloadData();
+		            	});
+		            }
+		       }
+        	]
+	    };
+	top.eModal.iframe(options);
+}
 
+function addTask(){
+	var options = {
+	        title: '新增',
+	        size: 'md',
+	        url:"/tbl/views/newtask.html",
+        	buttons: [{
+		            text: '关闭',
+		            style: 'danger',
+		            close: true
+		       },
+		       {
+		            text: '提交',
+		            style: 'primary',
+		            close: true,
+		            click: function(){
+		            	var taskName = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskName").val();
+		            	var taskDetails = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskDetails").val();
+		            	var group = top.$(".embed-responsive-item")[0].contentWindow.$("#group").val();
+		            	var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val();
+		            	
+		            	$.post("/tbl/teacher/newtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group,enddate:enddate},function(ret){
+		            		reloadData();
+		            	});
+		            }
+		       }
+        	]
+	    };
+	top.eModal.iframe(options);
 }
 </script>
 </head>
 <body>
 <div>
 	<div class="panel panel-default">
-	  	<div class="panel-heading">分组信息</div>
+	  	<div class="panel-heading">分组信息&nbsp;&nbsp;<a class="btn btn-sm btn-success" onclick="addGroup()">新增</a></div>
+	 
 	  	<div class="panel-body">
 	    		
-			<div class="btngroup pull-left" style="padding:5px 5px">
-				<a class="btn btn-md btn-success pull-left" onclick="addGroup()">新增</a>
-				
-				
-			</div>
+			
 				<table class="table table-hover" id="group">
 					
 				</table>
@@ -109,8 +160,10 @@ function addGroup(id){
 </div>
 <div>
 	<div class="panel panel-default">
-	  	<div class="panel-heading">任务信息</div>
+	  	<div class="panel-heading">任务信息&nbsp;&nbsp;<a class="btn btn-sm btn-success" onclick="addTask()">新增</a></div>
+	  
 	  	<div class="panel-body">
+	  	
 	    	<table class="table table-hover" id="task">
 			
 			</table>

@@ -1,6 +1,7 @@
 package com.Hu.TBLBasedLearing.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +76,34 @@ public class TeacherController {
 		
 		teacherService.clearGroup(Integer.parseInt(groupId));
 		return teacherService.tryDeleteGroup(Integer.parseInt(groupId));
+	}
+	
+	@RequestMapping("newgroup.htm")
+	@ResponseBody
+	public Result newgroup(HttpServletRequest request,String classId,String groupName){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(classId)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		return teacherService.addGroup(Integer.parseInt(classId),groupName,user.getUserID());
+	}
+	
+	@RequestMapping("newtask.htm")
+	@ResponseBody
+	public Result newtask(HttpServletRequest request,String taskName,String taskDetails,String group,Date enddate){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(group)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),enddate,user.getUserID());
 	}
 	
 	@RequestMapping("getStugrouplist.htm")
