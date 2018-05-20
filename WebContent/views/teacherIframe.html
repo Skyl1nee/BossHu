@@ -142,9 +142,9 @@ function addTask(){
 		            	var taskName = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskName").val();
 		            	var taskDetails = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskDetails").val();
 		            	var group = top.$(".embed-responsive-item")[0].contentWindow.$("#group").val();
-		            	/* var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val().toString(); */
+		            	var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val().toString();
 		            
-		            	$.post("/tbl/teacher/createtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group},function(ret){
+		            	$.post("/tbl/teacher/createtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group,enddate:enddate},function(ret){
 		            		reloadTaskData();
 		            	}); 
 		            }

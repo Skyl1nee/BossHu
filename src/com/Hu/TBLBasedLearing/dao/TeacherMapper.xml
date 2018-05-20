@@ -92,7 +92,7 @@
     </select> 
         <!-- 新增任务 --> 
     <select id="addTask" >
-	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now()) 
+	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate,EndDate) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now(),#{enddate}) 
 	]]>
     </select>
    

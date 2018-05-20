@@ -76,9 +76,9 @@ public class TeacherServiceImpl implements TeacherService {
 		return new Result(200);
 	}
 	@Override
-	public Result addTask(String taskName, String taskDetails, int group, int userId) {
+	public Result addTask(String taskName, String taskDetails, int group, int userId,Date enddate) {
 		try {
-			teacherMapper.addTask(taskName,taskDetails,group,userId);
+			teacherMapper.addTask(taskName,taskDetails,group,userId,enddate);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}

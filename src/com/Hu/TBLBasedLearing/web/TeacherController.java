@@ -1,10 +1,12 @@
 package com.Hu.TBLBasedLearing.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +32,7 @@ public class TeacherController {
 
 	@RequestMapping("createtask.htm")
 	@ResponseBody
-	public Result newtask(HttpServletRequest request,@RequestParam("taskName") String taskName,@RequestParam("taskDetails") String taskDetails,@RequestParam("group") String group){
+	public Result newtask(HttpServletRequest request,@RequestParam("taskName") String taskName,@RequestParam("taskDetails") String taskDetails,@RequestParam("group") String group,@DateTimeFormat(pattern = "yyyy-MM-dd")Date enddate){
 		User user = SessionHolder.getUser(request.getSession());
 		if (!user.getRoleName().equals("教师")) {
 			return new Result(500,"您不是教师，不能进行操作");	
@@ -39,7 +41,7 @@ public class TeacherController {
 		{
 			return new Result(404,"参数错误");
 		}
-		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),user.getUserID());
+		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),user.getUserID(),enddate);
 	}
 	
 	@RequestMapping("getgrouplist.htm")
