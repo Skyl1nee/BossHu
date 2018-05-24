@@ -35,16 +35,35 @@
 			for(var i=0; i<tasks.length;i++)
 			{
 				if(tasks[i].status == "未提交"){
-					$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
-							+ tasks[i].taskName+ "</td><td>"
-							+ tasks[i].taskDetails+"</td><td>" 
-							+ tasks[i].teacherID +"</td><td>" 
-							+ tasks[i].groupID+"</td><td>"
-							+ tasks[i].status+"</td><td>"
-							+ tasks[i].createDate+"</td><td>"
-							+ tasks[i].endDate+"</td><td>"
-							+ tasks[i].level+"</td><td>"
-							+"<a class='btn btn-md btn-danger' onclick='upload(" + tasks[i].taskID + ")'>提交文件</a>")
+					
+							var curTime = new Date();
+					var endDate = new Date(Date.parse(tasks[i].endDate));
+					if(curTime <= endDate){
+						$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+								+ tasks[i].taskName+ "</td><td>"
+								+ tasks[i].taskDetails+"</td><td>" 
+								+ tasks[i].teacherID +"</td><td>" 
+								+ tasks[i].groupID+"</td><td>"
+								+ tasks[i].status+"</td><td>"
+								+ tasks[i].createDate+"</td><td>"
+								+ tasks[i].endDate+"</td><td>"
+								+ tasks[i].level+"</td><td>"
+								+ "<a class='btn btn-md btn-danger' onclick='upload(" + tasks[i].taskID + ")'>提交文件</a>");
+						
+						
+					}else{
+						$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
+								+ tasks[i].taskName+ "</td><td>"
+								+ tasks[i].taskDetails+"</td><td>" 
+								+ tasks[i].teacherID +"</td><td>" 
+								+ tasks[i].groupID+"</td><td>"
+								+ tasks[i].status+"</td><td>"
+								+ tasks[i].createDate+"</td><td>"
+								+ tasks[i].endDate+"</td><td>"
+								+ tasks[i].level+"</td><td>"
+								+ "<font color='red' >超时未提交</a>");
+					
+					}
 				}
 				else{
 					$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
