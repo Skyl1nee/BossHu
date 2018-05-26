@@ -48,11 +48,11 @@ public class UserController {
 		case"3":
 			user.setGender("女装大佬");break;
 		}
-		
+		user.setStudentNo(stuNo);
 		user.setRoleID(roleID);
 		if(roleID == 1){
 			user.setClassID(classID);
-			user.setStudentNo(stuNo);
+			
 		}
 		else{
 		}		

@@ -29,9 +29,9 @@
     <insert id="Register" parameterType="com.Hu.TBLBasedLearing.entity.User">
     	<![CDATA[
             insert into usertable
-            	(UserName,Password,Gender,RoleID,GroupID,ClassID,StudentNo)
+            	(UserName,Password,Gender,RoleID,ClassID,StudentNo)
             values
-            	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{GroupID},#{StudentNo})
+            	(#{UserName},#{Password},#{Gender},#{RoleID},#{ClassID},#{StudentNo})
         ]]>
     </insert>
     <update id="updatepwd">
