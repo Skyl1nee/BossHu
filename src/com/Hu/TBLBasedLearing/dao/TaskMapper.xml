@@ -7,13 +7,14 @@
         <id property="TaskID" 			column="TaskID"/> 
         <result property="TaskDetails" 	column="TaskDetails"/> 
         <result property="TeacherID" 	column="TeacherID"/> 
-        <result property="GroupID" 		column="GroupID"/> 
      	<result property="Status" 		column="Status"/> 
         <result property="CreateDate" 	column="CreateDate"/> 
-        <result property="EndDate" 		column="EndDate"/>          
-        <result property="FilePath" 		column="FilePath"/>    
+        <result property="EndDate" 		column="EndDate"/>        
         <result property="Level" 		column="Level"/>    
         <result property="TeacherName" 		column="TeacherName"/>  
+                <result property="TaskType" 		column="TaskType"/>  
+        <result property="ClassId" 		column="ClassId"/>  
+        <result property="Purpose" 		column="Purpose"/>  
     </resultMap>
     <!-- 根据学生ID查询任务信息 --> 
     <select id="findMyTask" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">

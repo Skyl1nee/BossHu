@@ -38,32 +38,29 @@ function reloadData(){
 
 function reloadTaskData(){
 	$.post("/tbl/teacher/gettasklist.htm",function(tasks){
-		$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>分组id</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>等级</td></td><td style='width:200px'>操作</td> </tr>");
+		$("#task").html("<tr ><td >编号</td><td>任务名</td><td>任务描述</td><td >老师ID</td><td>状态</td><td>创建日期</td><td>截止日期</td><td>类型</td></td><td style='width:200px'>操作</td> </tr>");
 		for(var i=0; i<tasks.length;i++)
 		{
-			if(tasks[i].status == "未提交"){
+			if(tasks[i].status == "未提交" && tasks[i].taskType == "分组任务"){
 				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
 						+ tasks[i].taskName+ "</td><td>"
 						+ tasks[i].taskDetails+"</td><td>" 
 						+ tasks[i].teacherID +"</td><td>" 
-						+ tasks[i].groupID+"</td><td>"
 						+ tasks[i].status+"</td><td>"
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
-						+ tasks[i].level+"</td><td>"
-						+"<a style='color:red'>请等待学生提交</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
+						+ tasks[i].taskType+"</td><td>"
+						+"<a class='btn btn-md btn-primary' onclick='javascript:location.href=&quot;/tbl/views/tasktogroup.html?taskId="+ tasks[i].taskID + "&quot;'>分配</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 			else{
-				console.info(tasks[i].filePath.replace(/\\/g,"/"));
 				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
 						+ tasks[i].taskName+ "</td><td>"
 						+ tasks[i].taskDetails+"</td><td>" 
-						+ tasks[i].teacherID +"</td><td>" 
-						+ tasks[i].groupID+"</td><td>"
+						+ tasks[i].teacherID +"</td><td>"
 						+ tasks[i].status+"</td><td>"
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
-						+ tasks[i].level+"</td><td>"
+						+ tasks[i].taskType+"</td><td>"
 						+"<a class='btn btn-md btn-danger' href='javascript:window.open(&quot;/tbl/" +tasks[i].filePath + "&quot;)'>下载</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 		}
@@ -141,10 +138,13 @@ function addTask(){
 		            click: function(){
 		            	var taskName = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskName").val();
 		            	var taskDetails = top.$(".embed-responsive-item")[0].contentWindow.$("#TaskDetails").val();
-		            	var group = top.$(".embed-responsive-item")[0].contentWindow.$("#group").val();
+		            	
 		            	var enddate = top.$(".embed-responsive-item")[0].contentWindow.$("#enddate").val().toString();
-		            
-		            	$.post("/tbl/teacher/createtask.htm",{taskName:taskName,taskDetails:taskDetails,group:group,enddate:enddate},function(ret){
+		            	var taskType = top.$(".embed-responsive-item")[0].contentWindow.$("#taskType").val();
+		            	var Purpose = top.$(".embed-responsive-item")[0].contentWindow.$("#Purpose").val();
+		            	var classId = top.$(".embed-responsive-item")[0].contentWindow.$("#class").val();
+		            	
+		            	$.post("/tbl/teacher/createtask.htm",{taskName:taskName,taskDetails:taskDetails,enddate:enddate,taskType:taskType,Purpose:Purpose,classId:classId},function(ret){
 		            		reloadTaskData();
 		            	}); 
 		            }

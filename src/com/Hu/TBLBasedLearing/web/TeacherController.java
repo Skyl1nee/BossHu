@@ -32,16 +32,17 @@ public class TeacherController {
 
 	@RequestMapping("createtask.htm")
 	@ResponseBody
-	public Result newtask(HttpServletRequest request,@RequestParam("taskName") String taskName,@RequestParam("taskDetails") String taskDetails,@RequestParam("group") String group,@DateTimeFormat(pattern = "yyyy-MM-dd")Date enddate){
+	public Result newtask(HttpServletRequest request,@RequestParam("taskName") String taskName,@RequestParam("taskDetails") String taskDetails,@DateTimeFormat(pattern = "yyyy-MM-dd")Date enddate
+			,String taskType,String Purpose,String classId){
 		User user = SessionHolder.getUser(request.getSession());
 		if (!user.getRoleName().equals("教师")) {
 			return new Result(500,"您不是教师，不能进行操作");	
 		}
-		if (Integer.parseInt(group)  == 0) 
+		if (Integer.parseInt(classId)  == 0) 
 		{
 			return new Result(404,"参数错误");
 		}
-		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(group),user.getUserID(),enddate);
+		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(classId),user.getUserID(),enddate,Purpose,taskType);
 	}
 	
 	@RequestMapping("getgrouplist.htm")
@@ -53,6 +54,41 @@ public class TeacherController {
 		}
 		
 		return teacherService.getGroupList(user.getUserID());		
+	}
+	
+
+	@RequestMapping("getgrouplistbytaskid.htm")
+	@ResponseBody
+	public Result getgrouplistbytaskid(HttpServletRequest request,String taskId){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		
+		return teacherService.getGroupList(user.getUserID(),Integer.parseInt(taskId));		
+	}
+	@RequestMapping("savetasktogroup.htm")
+	@ResponseBody
+	public Result savetasktogroup(HttpServletRequest request,String ids,String taskId){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		if (Integer.parseInt(taskId)  == 0) 
+		{
+			return new Result(404,"参数错误");
+		}
+		
+		if (ids == "") {
+			return teacherService.clearTask(Integer.parseInt(taskId));
+		}
+		List<Integer> groups =  new ArrayList<Integer>() ; 
+		for (String id : ids.split(",")) {
+			groups.add(Integer.parseInt(id));
+		}
+		
+		
+		return teacherService.changeTaskToGroup(groups, Integer.parseInt(taskId));		
 	}
 	
 	@RequestMapping("savegroup.htm")

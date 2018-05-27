@@ -27,10 +27,9 @@ $(function(){
 		
 	    	   var ids = [];
 	    	   $("#chosenList option").each(function () {
-	    	        ids.push($(this).val() + ",");
+	    	        ids.push($(this).val());
 	    	    });
 	    	   var str = ids.toString();
-	    	   str = str.substring(0,str.length-1);
 	       
 	    	   submitgroup(str);
 	     

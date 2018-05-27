@@ -14,19 +14,31 @@
 <script src="/tbl/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 $(function(){	
-	$.post("/tbl/teacher/getgrouplist.htm",function(group){	
-		if(group.data){
-			for(var i = 0;i < group.data.length;i++){
-				$("#group").append("<option value ='" + group.data[i].groupID + "'>" + group.data[i].groupName + "</option>" );
-			}	
-		}
-	});
+   
     $('#date1').datetimepicker({  
         format: 'YYYY-MM-DD',  
         locale: moment.locale('zh-cn')  
-    });  
+    }); 
+    
+	$.post("/tbl/class/findall.htm",function(ret){
+		for(var i=0; i<ret.length;i++){
+			var opt = document.createElement("option");
+	        opt.text = ret[i].className;
+	        opt.value = ret[i].classID;
+	        var select = $("#class")[0].options.add(opt);
+		}
+	});
 });
-
+function taskTypeChange(){
+	   var objS = document.getElementById("taskType");
+    var value = objS.options[objS.selectedIndex].value;
+    if(value == "班级任务")
+	   {
+ 	   $("#ClassForm").removeClass('hidden');
+ 	   
+	   }else{$("#ClassForm").addClass('hidden');}
+	   
+}
 </script>
 </head>
 <body>
@@ -58,10 +70,25 @@ $(function(){
                 </span>  
             </div>  
 	  		</div>
+	  		<div class="form-group">
+	  			<label for="Purpose" class= "col-sm-2 control-label">知识点：</label>
+	  			<div class="col-sm-10">
+	  				<input class="form-control" type="text" name="Purpose" id="Purpose"/>
+	  			</div>
+	  		</div>
 	  		<div class="form-group" >
-		  		<label for="group" class= "col-sm-2 control-label">分组：</label>
+		  		<label for="taskType" class= "col-sm-2 control-label">类型：</label>
 		  		<div class="col-sm-10">
-			  		<select class="form-control" name="group" id="group">				  
+			  		<select class="form-control" name="taskType" id="taskType" onchange="taskTypeChange()">	
+			  		<option value="班级任务">班级任务</option>
+			  		<option value="分组任务" selected>分组任务</option>			  
+					</select>
+				</div>
+	  		</div>
+	  		<div class="form-group hidden" id="ClassForm">
+		  		<label for="class" class= "col-sm-2 control-label">班级：</label>
+		  		<div class="col-sm-10">
+			  		<select class="form-control" name="class" id="class">	
 					</select>
 				</div>
 	  		</div>
