@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+	<title>管理员首页</title>
+	<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+	<!-- 引入已经压缩的css文件 -->
+	<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+	<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+	<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+	<!-- 引入已经压缩的js文件 -->
+	 <script src="/tbl/js/bootstrap.min.js"></script>
+	 <script src="/tbl/js/validator/bootstrapValidator.min.js"></script>
+	<link href="/tbl/css/validator/bootstrapValidator.min.css" rel="stylesheet" />
+	<!-- Bootstrap core CSS -->
+	<link href="/tbl/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/tbl/js/eModal.min.js"></script>
+	<script type="text/javascript"></script>
+	</head>
+	<script>
+		$(function(){
+			$.post("/tbl/task/findallTaskuser.htm",function(tasks){				
+				$("#score").html("<tr ><td style='display: none;margin-top'>用户ID</td><td>用户名</td><td style='display: none;margin-top'>任务ID</td><td>任务名</td><td>分数</td><td>操作</td> </tr>");
+				for(var i=0; i<tasks.length;i++)
+				{
+					$("#score").append("<tr><td>" 
+							+ tasks[i].userID + "</td><td>" 
+							+ tasks[i].userName + "</td><td>" 
+							+ tasks[i].taskID + "</td><td>" 
+							+ tasks[i].taskName+ "</td><td>"
+							 							
+							+"<input id='score" + tasks[i].taskID+ "' value='" + tasks[i].score + "'/>"
+							+"<a class='btn btn-md btn-info' onclick='score(" + tasks[i].userID +"," + tasks[i].taskID +")'>打分</a>"
+							);
+				}
+			});
+		});
+		function score(userID,taskID){
+			var p = "#score" + taskID;
+			var score = $(p).val()
+			$.post("/tbl/task/score.htm",{userID:userID,taskID:taskID,score:score},function(result){
+				if(result.code == 200){					
+					alert("打分成功");
+					
+				}
+				else{
+					alert("打分失败，请联系管理员");
+				}
+			})
+			
+		}
+	</script>
+<body>
+	<div class="container">
+		<div>
+			<h4>话不多说，赶紧打分</h4>
+		</div>
+		<div class="panel panel-default">
+		  	<div class="panel-heading">打分</div>
+		  	<div class="panel-body">
+		    	<table class="table table-hover table-bordered" id="score" >
+				
+				</table>
+		  	</div>
+		</div>	
+		
+	</div>
+</body>
+</html>
