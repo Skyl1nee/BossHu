@@ -23,11 +23,19 @@
         <result property="Score" 		column="Score"/>      	          
         <result property="FilePath" 		column="FilePath"/>
         <result property="TaskName" 		column="TaskName"/>
-        <result property="UserName" 		column="UserName"/>            
+        <result property="UserName" 		column="UserName"/>
+        <result property="TaskType" 		column="TaskType"/>
+        <result property="GroupName" 		column="GroupName"/>
+        <result property="ClassName" 		column="ClassName"/>
     </resultMap>
     <!-- 根据学生ID查询任务信息 --> 
     <select id="findMyTask" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">
-	    <![CDATA[SELECT tasktable.TaskID,tasktable.TaskName,tasktable.TaskDetails,tasktable.TeacherID,taskgroup.GroupID,tasktable.`Status`,tasktable.CreateDate,tasktable.EndDate,`Level` 
+	    <![CDATA[SELECT tasktable.TaskID,tasktable.TaskName,tasktable.TaskDetails,tasktable.TeacherID,0 as
+ GroupId,tasktable.`Status`,tasktable.CreateDate,tasktable.EndDate,tasktable.`Level` 
+					from (SELECT * from tasktable where TaskType = '班级任务' and ClassId=(SELECT  ClassID from usertable where UserID=#{userId})) as tasktable
+					left JOIN classtable on tasktable.ClassId = classtable.ClassID				
+UNION 
+SELECT tasktable.TaskID,tasktable.TaskName,tasktable.TaskDetails,tasktable.TeacherID,taskgroup.GroupId,tasktable.`Status`,tasktable.CreateDate,tasktable.EndDate,`Level` 
 					from tasktable 
 					INNER JOIN taskgroup on tasktable.TaskID = taskgroup.TaskId
 					INNER JOIN grouptable on taskgroup.GroupId = grouptable.GroupID
@@ -64,9 +72,12 @@
     </update>
     
      <select id="findall" resultType="com.Hu.TBLBasedLearing.entity.TaskUser" resultMap="taskresultMap">
-	    <![CDATA[SELECT taskuser.TaskID, TaskName,taskuser.UserID,UserName,Score from taskuser
+	    <![CDATA[SELECT taskuser.TaskID, TaskName,TaskType,ClassName,GroupName,taskuser.UserID,UserName,Score,FilePath from taskuser
 				INNER JOIN usertable on taskuser.UserID = usertable.UserID
 				INNER JOIN tasktable on taskuser.TaskID = tasktable.TaskID
+				left JOIN classtable on classtable.ClassID = tasktable.ClassId
+				left JOIN taskgroup on taskgroup.TaskID = tasktable.TaskID
+				LEFT JOIN grouptable on grouptable.GroupID = taskgroup.GroupId
 				]]>
     </select> 
 </mapper>

@@ -20,15 +20,16 @@
 	<script>
 		$(function(){
 			$.post("/tbl/task/findallTaskuser.htm",function(tasks){				
-				$("#score").html("<tr ><td style='display: none;margin-top'>用户ID</td><td>用户名</td><td style='display: none;margin-top'>任务ID</td><td>任务名</td><td>分数</td><td>操作</td> </tr>");
+				$("#score").html("<tr ><td>用户名</td><td>任务名</td><td>任务类型</td><td>分组名</td><td>班级名</td><td>下载</td><td>操作</td> </tr>");
 				for(var i=0; i<tasks.length;i++)
 				{
 					$("#score").append("<tr><td>" 
-							+ tasks[i].userID + "</td><td>" 
 							+ tasks[i].userName + "</td><td>" 
-							+ tasks[i].taskID + "</td><td>" 
 							+ tasks[i].taskName+ "</td><td>"
-							 							
+							+ tasks[i].taskType+ "</td><td>"
+							+ tasks[i].groupName+ "</td><td>"
+							+ tasks[i].className+ "</td><td>"
+							+ "<a href='javascript:window.open(&quot;/tbl/" + tasks[i].filePath + "&quot;)'>下载</a></td><td>"						
 							+"<input id='score" + tasks[i].taskID+ "' value='" + tasks[i].score + "'/>"
 							+"<a class='btn btn-md btn-info' onclick='score(" + tasks[i].userID +"," + tasks[i].taskID +")'>打分</a>"
 							);
@@ -53,7 +54,7 @@
 <body>
 	<div class="container">
 		<div>
-			<h4>话不多说，赶紧打分</h4>
+			<a class="btn btn-primary pull-left" style="margin:10px 5px" onclick="javascript:history.back();void(0)"> &lt;返回</a>
 		</div>
 		<div class="panel panel-default">
 		  	<div class="panel-heading">打分</div>

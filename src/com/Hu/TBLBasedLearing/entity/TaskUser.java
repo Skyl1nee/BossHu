@@ -9,11 +9,32 @@ public class TaskUser {
 	public String  FilePath;
 	public String TaskName;
 	public String UserName;
+	public String TaskType;
+	public String GroupName;
+	public String ClassName;
+	public String getClassName() {
+		return ClassName;
+	}
+	public void setClassName(String className) {
+		ClassName = className;
+	}
 	public int getID() {
 		return ID;
 	}
 	public void setID(int iD) {
 		ID = iD;
+	}
+	public String getTaskType() {
+		return TaskType;
+	}
+	public void setTaskType(String taskType) {
+		TaskType = taskType;
+	}
+	public String getGroupName() {
+		return GroupName;
+	}
+	public void setGroupName(String groupName) {
+		GroupName = groupName;
 	}
 	public int getUserID() {
 		return UserID;

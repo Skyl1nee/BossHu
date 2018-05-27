@@ -30,7 +30,7 @@ function reloadData(){
 					+ ret.data[i].className+"</td><td>" 
 					+ ret.data[i].groupLeader +"</td><td>" 
 					+ ret.data[i].groupLeaderNo+"</td><td>" 
-					+ "<a class='btn btn-md btn-danger' onclick='delGroup("+ret.data[i].groupID +")'>删除</a><a style='margin-left:10px' class='btn btn-md btn-primary ' onclick='editGroup("+ret.data[i].groupID +")'>修改成员</a></td>	</tr>")
+					+ "<a class='btn btn-md btn-primary ' onclick='editGroup("+ret.data[i].groupID +")'>修改成员</a><a  style='margin-left:10px' class='btn btn-md btn-danger' onclick='delGroup("+ret.data[i].groupID +")'>删除</a></td>	</tr>")
 					
 		}
 	});
@@ -50,7 +50,7 @@ function reloadTaskData(){
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
 						+ tasks[i].taskType+"</td><td>"
-						+"<a class='btn btn-md btn-primary' onclick='javascript:location.href=&quot;/tbl/views/tasktogroup.html?taskId="+ tasks[i].taskID + "&quot;'>分配</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
+						+"<a class='btn btn-md btn-primary' onclick='javascript:location.href=&quot;/tbl/views/tasktogroup.html?taskId="+ tasks[i].taskID + "&quot;'>分配</a><a style='margin-left:10px' class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 			else{
 				$("#task").append("<tr><td>" +tasks[i].taskID + "</td><td>" 
@@ -61,7 +61,7 @@ function reloadTaskData(){
 						+ tasks[i].createDate+"</td><td>"
 						+ tasks[i].endDate+"</td><td>"
 						+ tasks[i].taskType+"</td><td>"
-						+"<a class='btn btn-md btn-danger' href='javascript:window.open(&quot;/tbl/" +tasks[i].filePath + "&quot;)'>下载</a><a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
+						+"<a class='btn btn-md btn-danger' onclick='delTask("+tasks[i].taskID +")'>删除</a>")
 			}
 		}
 	});
@@ -172,7 +172,7 @@ function addTask(){
 </div>
 <div>
 	<div class="panel panel-default">
-	  	<div class="panel-heading">任务信息&nbsp;&nbsp;<a class="btn btn-sm btn-success" onclick="addTask()">新增</a></div>
+	  	<div class="panel-heading">任务信息&nbsp;&nbsp;<a class="btn btn-sm btn-success" onclick="addTask()">新增</a><a style="margin-left:10px" class="btn btn-sm btn-success" onclick="JavaScript:location.href='/tbl/views/score.html'">打分</a></div>
 	  
 	  	<div class="panel-body">
 	  	
