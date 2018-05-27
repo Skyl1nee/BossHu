@@ -76,9 +76,12 @@ public class TeacherServiceImpl implements TeacherService {
 		return new Result(200);
 	}
 	@Override
-	public Result addTask(String taskName, String taskDetails, int group, int userId,Date enddate) {
+	public Result addTask(String taskName, String taskDetails, int classId, int userId,Date enddate,String purpose,String taskType) {
 		try {
-			teacherMapper.addTask(taskName,taskDetails,group,userId,enddate);
+			if (taskType == "班级任务") {
+				classId = (Integer) null;
+			}
+			teacherMapper.addTask(taskName,taskDetails,classId,userId,enddate,purpose,taskType);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}
@@ -88,6 +91,34 @@ public class TeacherServiceImpl implements TeacherService {
 	public Result DeleteTask(int taskId) {
 		try {
 			teacherMapper.DeleteTask(taskId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public Result getGroupList(int userID, int taskId) {
+		List<Group> groupList;
+		try {
+			groupList = teacherMapper.getgrouplistbytaskid(userID,taskId);
+		} catch (Exception e) {
+			return null;
+		}
+		return new Result(200,groupList);
+	}
+	@Override
+	public Result clearTask(int taskId) {
+		try {
+			teacherMapper.clearTask(taskId);
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+		return new Result(200);
+	}
+	@Override
+	public Result changeTaskToGroup(List<Integer> groups, int taskId) {
+		try {
+			teacherMapper.changeTaskToGroup(groups, taskId);
 		} catch (Exception e) {
 			return new Result(500,"服务器错误");
 		}

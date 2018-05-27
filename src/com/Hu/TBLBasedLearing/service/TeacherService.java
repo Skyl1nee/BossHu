@@ -26,7 +26,13 @@ public interface TeacherService {
 
 	public Result DeleteTask(int taskId);
 
-	public Result addTask(String taskName, String taskDetails, int parseInt, int userID, Date enddate);
+	public Result addTask(String taskName, String taskDetails, int classId, int userID, Date enddate, String purpose, String taskType);
+
+	public Result getGroupList(int userID, int taskId);
+
+	public Result clearTask(int taskId);
+
+	public Result changeTaskToGroup(List<Integer> groups, int taskId);
 
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Hu.TBLBasedLearing.dao.TaskMapper;
 import com.Hu.TBLBasedLearing.entity.Task;
+import com.Hu.TBLBasedLearing.entity.TaskUser;
 import com.Hu.TBLBasedLearing.model.Result;
 import com.Hu.TBLBasedLearing.service.TaskService;
 @Service
@@ -27,14 +28,37 @@ public class TaskServieImpl implements TaskService {
 		return task;
 	}
 	@Override
-	public Result setStatus(Task task) {
+	public Result uptask(Task task,TaskUser taskuser) {
 		try{
 			this.taskMapper.changeStatus(task);
+			this.taskMapper.uptask(taskuser);
 			return new Result(200,"修改成功");
 		}
 		catch(Exception e){
 			return new Result(500,"修改失败");
 		}
+	}
+	@Override
+	public TaskUser findTaskuser(int TaskID, int UserID) {
+		TaskUser taskuser = new TaskUser();
+		taskuser.setUserID(UserID);
+		taskuser.setTaskID(TaskID);
+		TaskUser tu = taskMapper.findTaskUser(taskuser);
+		return tu;
+	}
+	@Override
+	public Result score(TaskUser taskuser) {
+		try{			
+			this.taskMapper.score(taskuser);;
+			return new Result(200,"修改成功");
+		}
+		catch(Exception e){
+			return new Result(500,"修改失败");
+		}
+	}
+	@Override
+	public List<TaskUser> findall() {		
+		return taskMapper.findall();
 	}
 
 }

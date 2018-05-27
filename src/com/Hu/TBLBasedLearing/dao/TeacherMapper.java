@@ -25,8 +25,14 @@ public interface TeacherMapper {
 
 	public void addGroup(@Param("classId")int classId, @Param("groupName")String groupName,@Param("userId")int userId);
 
-	public void addTask(@Param("taskName")String taskName, @Param("taskDetails")String taskDetails,@Param("group") int group,@Param("userId")int userId,@Param("enddate")Date enddate);
+	public void addTask(@Param("taskName")String taskName, @Param("taskDetails")String taskDetails,@Param("classId") int classId,@Param("userId")int userId,@Param("enddate")Date enddate, @Param("purpose")String purpose, @Param("taskType")String taskType);
 
 	public void DeleteTask(@Param("taskId")int taskId);
+
+	public List<Group> getgrouplistbytaskid(@Param("userID")int userID, @Param("taskId")int taskId);
+
+	public void clearTask(@Param("taskId")int taskId);
+
+	public void changeTaskToGroup(@Param("groups")List<Integer> groups, @Param("taskId")int taskId);
 	
 }

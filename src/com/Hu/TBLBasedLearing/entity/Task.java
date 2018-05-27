@@ -15,9 +15,32 @@ public class Task {
 	private String FilePath;
 	private String Level;
 	private String TeacherName;
+	private int ClassId;
+	private String TaskType;
+	private String Purpose;
+	
+	public String getTaskType() {
+		return TaskType;
+	}
+	public void setTaskType(String taskType) {
+		TaskType = taskType;
+	}
+	public String getPurpose() {
+		return Purpose;
+	}
+	public void setPurpose(String purpose) {
+		Purpose = purpose;
+	}
 	public int getTaskID() {
 		return TaskID;
 	}
+	public int getClassId() {
+		return ClassId;
+	}
+	public void setClassId(int classId) {
+		ClassId = classId;
+	}
+	
 	public void setTaskID(int taskID) {
 		TaskID = taskID;
 	}

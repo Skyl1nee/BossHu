@@ -21,13 +21,14 @@
         <id property="TaskID" 			column="TaskID"/> 
         <result property="TaskDetails" 	column="TaskDetails"/> 
         <result property="TeacherID" 	column="TeacherID"/> 
-        <result property="GroupID" 		column="GroupID"/> 
      	<result property="Status" 		column="Status"/> 
         <result property="CreateDate" 	column="CreateDate"/> 
         <result property="EndDate" 		column="EndDate"/>          
-        <result property="FilePath" 		column="FilePath"/>    
         <result property="Level" 		column="Level"/>    
         <result property="TeacherName" 		column="TeacherName"/>  
+        <result property="TaskType" 		column="TaskType"/>  
+        <result property="ClassId" 		column="ClassId"/>  
+        <result property="Purpose" 		column="Purpose"/>  
     </resultMap>
     
     <!-- 根据老师ID查询分组表 --> 
@@ -63,13 +64,15 @@
     
         <!-- 删除空白分组 --> 
     <select id="tryDeleteGroup" >
-	    <![CDATA[DELETE from grouptable where GroupID = #{groupId}
+	    <![CDATA[DELETE from grouptable where GroupID = #{groupId};
+	    DELETE FROM taskgroup where GroupID = #{groupId}
 	]]>
     </select> 
     
         <!-- 删除任务 --> 
     <select id="DeleteTask" >
-	    <![CDATA[DELETE from tasktable where TaskId = #{taskId}
+	    <![CDATA[DELETE from tasktable where TaskId = #{taskId};
+	    DELETE FROM taskgroup where TaskId = #{taskId}
 	]]>
     </select> 
     
@@ -92,8 +95,40 @@
     </select> 
         <!-- 新增任务 --> 
     <select id="addTask" >
-	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,GroupID,Status,CreateDate,EndDate) VALUES(#{taskName},#{taskDetails},#{userId},#{group},'未提交',now(),#{enddate}) 
+	    <![CDATA[INSERT into tasktable(TaskName,TaskDetails,TeacherID,Status,CreateDate,EndDate,purpose,tasktype,classId) VALUES(#{taskName},#{taskDetails},#{userId},'未提交',now(),#{enddate},#{purpose},#{taskType},#{classId}) 
 	]]>
     </select>
-   
+       
+    <!-- 根据老师ID查询分组表 和是否在taskId对应的任务中 --> 
+    <select id="getgrouplistbytaskid" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
+	    <![CDATA[SELECT g.*,c.ClassName ,
+				(CASE 
+				WHEN tg.ID is not null THEN
+					'yes'
+				ELSE
+					'no'
+			END) AS GroupLeader
+	    from grouptable g 
+	    				  left join classtable c on g.ClassID = c.ClassID
+								LEFT JOIN (select * from taskgroup where TaskID=#{taskId}) tg on tg.GroupID = g.GroupID
+	         WHERE TeacherID=#{userID}]]>
+    </select> 
+    
+      <!-- 清空任务分配的小组 --> 
+    <select id="clearTask" >
+	    <![CDATA[
+		DELETE from taskgroup where TaskId = #{taskId}
+	]]>
+    </select> 
+    
+            <!-- 修改任务分组信息 --> 
+    <select id="changeTaskToGroup" >
+		 <![CDATA[DELETE from taskgroup where TaskId = #{taskId};
+		INSERT into taskgroup(taskId,GroupID,IssueDate) VALUES ]]>
+		<foreach collection="groups" item="groupid" separator=",">  
+            (#{taskId},#{groupid},NOW())  
+        </foreach>  
+
+    </select> 
+    
 </mapper>
