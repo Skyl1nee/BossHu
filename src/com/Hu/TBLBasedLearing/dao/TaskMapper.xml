@@ -7,18 +7,33 @@
         <id property="TaskID" 			column="TaskID"/> 
         <result property="TaskDetails" 	column="TaskDetails"/> 
         <result property="TeacherID" 	column="TeacherID"/> 
-        <result property="GroupID" 		column="GroupID"/> 
      	<result property="Status" 		column="Status"/> 
         <result property="CreateDate" 	column="CreateDate"/> 
-        <result property="EndDate" 		column="EndDate"/>          
-        <result property="FilePath" 		column="FilePath"/>    
+        <result property="EndDate" 		column="EndDate"/>        
         <result property="Level" 		column="Level"/>    
         <result property="TeacherName" 		column="TeacherName"/>  
+                <result property="TaskType" 		column="TaskType"/>  
+        <result property="ClassId" 		column="ClassId"/>  
+        <result property="Purpose" 		column="Purpose"/>  
+    </resultMap>
+    <resultMap id="taskresultMap" type="com.Hu.TBLBasedLearing.entity.TaskUser"> 
+        <id property="ID" 			column="ID"/> 
+        <result property="UserID" 	column="UserID"/> 
+        <result property="TaskID" 	column="TaskID"/> 
+        <result property="Score" 		column="Score"/>      	          
+        <result property="FilePath" 		column="FilePath"/>
+        <result property="TaskName" 		column="TaskName"/>
+        <result property="UserName" 		column="UserName"/>            
     </resultMap>
     <!-- 根据学生ID查询任务信息 --> 
     <select id="findMyTask" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">
-	    <![CDATA[SELECT t.TaskID,t.TaskName,t.TaskDetails,t.TeacherID,t.GroupID,t.`Status`,t.CreateDate,t.EndDate,t.FilePath,t.`Level` from tasktable t INNER JOIN usertable u ON t.GroupID = u.GroupID
-				where u.UserID = #{userId}]]>
+	    <![CDATA[SELECT tasktable.TaskID,tasktable.TaskName,tasktable.TaskDetails,tasktable.TeacherID,taskgroup.GroupID,tasktable.`Status`,tasktable.CreateDate,tasktable.EndDate,`Level` 
+					from tasktable 
+					INNER JOIN taskgroup on tasktable.TaskID = taskgroup.TaskId
+					INNER JOIN grouptable on taskgroup.GroupId = grouptable.GroupID
+					INNER JOIN usertable on grouptable.GroupID = usertable.GroupID
+					
+					where usertable.UserID = #{userId}]]>
     </select> 
      <select id="findTaskByID" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="resultMap">
 	    <![CDATA[SELECT * from tasktable
@@ -27,9 +42,32 @@
     
     <!-- 修改状态 -->
     <update id="changeStatus">
-    	<![CDATA[ update tasktable set Status = #{Status},FilePath =#{FilePath}
+    	<![CDATA[ update tasktable set Status = #{Status}
 	         WHERE TaskID=#{TaskID}]]>
     </update>
+    <insert id="uptask" parameterType="com.Hu.TBLBasedLearing.entity.TaskUser">
+    	<![CDATA[
+            insert into taskuser
+            	(UserID,TaskID,FilePath)
+            values
+            	(#{UserID},#{TaskID},#{FilePath})
+        ]]>
+    </insert>
+
+     <select id="findTaskUser" resultType="com.Hu.TBLBasedLearing.entity.TaskUser" resultMap="taskresultMap">
+	    <![CDATA[SELECT * from taskuser
+				where taskuser.TaskID = #{TaskID} and taskuser.UserID=#{UserID}]]>
+    </select> 
+     <update id="score">
+    	<![CDATA[ update taskuser set Score = #{Score}
+	         WHERE ID=#{ID}]]>
+    </update>
     
+     <select id="findall" resultType="com.Hu.TBLBasedLearing.entity.TaskUser" resultMap="taskresultMap">
+	    <![CDATA[SELECT taskuser.TaskID, TaskName,taskuser.UserID,UserName,Score from taskuser
+				INNER JOIN usertable on taskuser.UserID = usertable.UserID
+				INNER JOIN tasktable on taskuser.TaskID = tasktable.TaskID
+				]]>
+    </select> 
 </mapper>
     
