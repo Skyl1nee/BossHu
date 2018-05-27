@@ -41,11 +41,12 @@ public class TaskController {
 		task = this.taskService.findTaskByID((Integer.parseInt(taskID)));
 		// 设置保存路径
 		String savePath = "upload//" +task.getTaskName();
+		String realPath = request.getSession().getServletContext().getRealPath("upload//"+task.getTaskName());
 		// 获取文件名称
 		String fileName = uploadFile.getOriginalFilename();
 
 		// 创建本地文件
-		File targetFile = new File(savePath, fileName);
+		File targetFile = new File(realPath, fileName);
 		// 判断文件及目录是否存在
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();
