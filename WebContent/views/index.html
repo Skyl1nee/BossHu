@@ -44,7 +44,13 @@
 				case 3:
 					rolename = "student";break;			
 			}
-			var iframeUrl = "/tbl/views/" + rolename + "Iframe.html";
+			var iframeUrl;
+			if(rolename=="teacher")
+			{
+				iframeUrl = "/tbl/views/scorestatistics.html";
+			}else{
+				iframeUrl = "/tbl/views/" + rolename + "Iframe.html";
+			}
 			$("#content").attr("src",iframeUrl);				
 		});
 		

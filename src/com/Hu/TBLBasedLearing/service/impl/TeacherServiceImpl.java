@@ -124,4 +124,12 @@ public class TeacherServiceImpl implements TeacherService {
 		}
 		return new Result(200);
 	}
+	@Override
+	public Result getStatistic(int teacherId) {
+		try {
+			return new Result(200,teacherMapper.getStatistic(teacherId));
+		} catch (Exception e) {
+			return new Result(500,"服务器错误");
+		}
+	}
 }

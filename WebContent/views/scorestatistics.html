@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>分数统计</title>
+<script src="/tbl/js/jquery-1.11.3.min.js"></script>
+<!-- 引入已经压缩的css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap.min.css">
+<!-- 如果你想采用Bootstrap2的样式，那么引入该压缩css文件 -->
+<link rel="stylesheet" href="/tbl/css/bootstrap-theme.min.css">
+<!-- 引入已经压缩的js文件 -->
+ <script src="/tbl/js/bootstrap.min.js"></script>
+ <script src="/tbl/js/highcharts.js"></script>
+
+</head>
+<body>
+<div>
+<div style="width:100%;"><a style="margin-left:20px;margin-top:10px" class="btn btn-sm btn-primary" onclick="javascript:location.href='/tbl/views/teacherIframe.html';">进入主页</a></div>
+	<div id="container" style="width: 90%; margin: 0 auto;">
+		
+	</div>
+</div>
+
+	
+</body>
+
+<script>
+$(function(){	
+	$.post("/tbl/teacher/statistics.htm",function(ret){	
+		 var title = {
+			       text: '分数统计'   
+			   };
+			   var xAxis = {
+			       categories: ['0-40分', '41-50分', '51-60分', '61-70分', '71-80分', '81-90分'
+			              ,'91-100分']
+			   };
+			   var yAxis = {
+			      title: {
+			         text: '人数 '
+			      },
+			      plotLines: [{
+			         value: 0,
+			         width: 1,
+			         color: '#808080'
+			      }]
+			   };   
+
+			   var tooltip = {
+			      valueSuffix: '人'
+			   }
+			   var chart = {
+					      type: 'column'
+					   };
+			   var legend = {
+			      layout: 'vertical',
+			      align: 'right',
+			      verticalAlign: 'middle',
+			      borderWidth: 0
+			   };
+
+			   var series =  [
+			      {
+			         name: '人数',
+			         data: [ret.data.p0, ret.data.p1, ret.data.p2, ret.data.p3, ret.data.p4, ret.data.p5,ret.data.p6]
+			      }
+			   ];
+
+			   var json = {};
+				json.chart = chart;
+			   json.title = title;
+			   json.xAxis = xAxis;
+			   json.yAxis = yAxis;
+			   json.tooltip = tooltip;
+			   json.legend = legend;
+			   json.series = series;
+
+			$('#container').highcharts(json);
+	});
+	
+});
+
+</script>
+</html>

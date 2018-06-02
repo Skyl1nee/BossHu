@@ -3,7 +3,10 @@ package com.Hu.TBLBasedLearing.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.Hu.TBLBasedLearing.entity.Group;
+import com.Hu.TBLBasedLearing.entity.Statistic;
 import com.Hu.TBLBasedLearing.entity.Task;
 import com.Hu.TBLBasedLearing.model.Result;
 
@@ -34,5 +37,6 @@ public interface TeacherService {
 
 	public Result changeTaskToGroup(List<Integer> groups, int taskId);
 
-	
+	public Result getStatistic(int teacherId);
+
 }

@@ -30,6 +30,15 @@
         <result property="ClassId" 		column="ClassId"/>  
         <result property="Purpose" 		column="Purpose"/>  
     </resultMap>
+        <resultMap id="statisticResultMap" type="com.Hu.TBLBasedLearing.entity.Statistic"> 
+        <result property="p0" 	column="p0"/> 
+        <result property="p1" 	column="p1"/> 
+     	<result property="p2" 		column="p2"/> 
+        <result property="p3" 	column="p3"/> 
+        <result property="p4" 		column="p4"/>          
+        <result property="p5" 		column="p5"/>    
+        <result property="p6" 		column="p6"/> 
+    </resultMap>
     
     <!-- 根据老师ID查询分组表 --> 
     <select id="getGroupByUserId" resultType="com.Hu.TBLBasedLearing.entity.Group" resultMap="resultMap">
@@ -80,6 +89,19 @@
     <select id="getTaskList" resultType="com.Hu.TBLBasedLearing.entity.Task" resultMap="taskResultMap">
 	    <![CDATA[SELECT * from tasktable
 				where tasktable.TeacherID = #{userId}]]>
+    </select> 
+    
+        <!-- 获取统计数据 --> 
+    <select id="getStatistic" resultType="com.Hu.TBLBasedLearing.entity.Statistic" resultMap="statisticResultMap">
+	    <![CDATA[select sum(case when Score>0 and Score <= 40 then 1 else 0 end) as 'p0',
+sum(case when Score>41 and Score <= 50 then 1 else 0 end) as 'p1',
+sum(case when Score>51 and Score <= 60 then 1 else 0 end) as 'p2',
+sum(case when Score>61 and Score <= 70 then 1 else 0 end) as 'p3',
+sum(case when Score>71 and Score <= 80 then 1 else 0 end) as 'p4',
+sum(case when Score>81 and Score <= 90 then 1 else 0 end) as 'p5',
+sum(case when Score>91 and Score <= 100 then 1 else 0 end) as 'p6'
+FROM taskuser WHERE Score is not null and UserID in (SELECT UserID from usertable WHERE ClassID=(SELECT ClassID FROM usertable where UserID = #{teacherId}))
+]]>
     </select> 
     
     <!-- 根据学生ID查询分组信息 --> 

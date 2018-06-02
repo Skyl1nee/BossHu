@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.Hu.TBLBasedLearing.entity.Group;
+import com.Hu.TBLBasedLearing.entity.Statistic;
 import com.Hu.TBLBasedLearing.entity.Task;
 
 
@@ -35,4 +36,6 @@ public interface TeacherMapper {
 
 	public void changeTaskToGroup(@Param("groups")List<Integer> groups, @Param("taskId")int taskId);
 	
+	public Statistic getStatistic(@Param("teacherId")int teacherId);
+
 }

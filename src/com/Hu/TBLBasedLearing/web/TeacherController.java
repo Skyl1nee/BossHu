@@ -45,6 +45,16 @@ public class TeacherController {
 		return teacherService.addTask(taskName,taskDetails,Integer.parseInt(classId),user.getUserID(),enddate,Purpose,taskType);
 	}
 	
+	@RequestMapping("statistics.htm")
+	@ResponseBody
+	public Result statistics(HttpServletRequest request){
+		User user = SessionHolder.getUser(request.getSession());
+		if (!user.getRoleName().equals("教师")) {
+			return new Result(500,"您不是教师，不能进行操作");	
+		}
+		return teacherService.getStatistic(user.getUserID());
+	}
+	
 	@RequestMapping("getgrouplist.htm")
 	@ResponseBody
 	public Result getgrouplist(HttpServletRequest request){
